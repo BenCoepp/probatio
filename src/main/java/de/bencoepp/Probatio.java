@@ -1,6 +1,7 @@
 package de.bencoepp;
 
 import de.bencoepp.command.InitCommand;
+import de.bencoepp.command.ProjectCommand;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "probatio", mixinStandardHelpOptions = true, version = "demo v. 1.8",
@@ -9,6 +10,7 @@ import picocli.CommandLine;
         footer = "%nSee 'probatio help <command>' to read about a specific subcommand or concept.",
         subcommands = {
                 InitCommand.class,
+                ProjectCommand.class,
                 CommandLine.HelpCommand.class
         })
 public class Probatio implements Runnable{
