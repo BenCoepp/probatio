@@ -1,6 +1,7 @@
 package de.bencoepp;
 
 import de.bencoepp.command.InitCommand;
+import de.bencoepp.command.InstallCommand;
 import de.bencoepp.command.ProjectCommand;
 import picocli.CommandLine;
 
@@ -11,6 +12,7 @@ import picocli.CommandLine;
         subcommands = {
                 InitCommand.class,
                 ProjectCommand.class,
+                InstallCommand.class,
                 CommandLine.HelpCommand.class
         })
 public class Probatio implements Runnable{
