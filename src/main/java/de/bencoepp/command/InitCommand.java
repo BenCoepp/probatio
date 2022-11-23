@@ -47,9 +47,9 @@ class InitCommand implements Callable<Integer> {
                 con = dbUtils.getCon();
                 String sqlCreateProject = "CREATE TABLE project (" +
                         "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "  name varchar(255)" +
-                        "  path varchar(255)" +
-                        "  type INTEGER" +
+                        "  name varchar(255)," +
+                        "  path varchar(255)," +
+                        "  type INTEGER," +
                         "  pathToDockerfile varchar(255)" +
                         ")";
                 Statement statement = con.createStatement();

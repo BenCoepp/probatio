@@ -1,5 +1,8 @@
 package de.bencoepp.entity;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Project {
     private Integer id;
     private String name;
@@ -55,5 +58,13 @@ public class Project {
     public String getPreparedInsert(){
         String str = "INSERT INTO project (name,path,type,pathToDockerfile) VALUES (?,?,?,?)";
         return str;
+    }
+
+    public void fromResultSet(ResultSet resultSet) throws SQLException {
+        this.id = resultSet.getInt("id");
+        this.name = resultSet.getString("name");
+        this.path = resultSet.getString("path");
+        this.type = resultSet.getInt("type");
+        this.pathToDockerfile = resultSet.getString("pathToDockerfile");
     }
 }

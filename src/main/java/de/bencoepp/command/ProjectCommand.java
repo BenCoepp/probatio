@@ -25,7 +25,8 @@ import java.util.concurrent.Callable;
         description = "manage and controll projects for the use in this application" +
                 "as well as report project use")
 public class ProjectCommand implements Callable<Integer> {
-
+    @CommandLine.Parameters(index = "0", arity = "0..1")
+    String project;
     @CommandLine.Parameters(hidden = true)  // "hidden": don't show this parameter in usage help message
     List<String> allParameters; // no "index" attribute: captures _all_ arguments
     @CommandLine.Option(names = {"-a", "--all"},
@@ -41,6 +42,8 @@ public class ProjectCommand implements Callable<Integer> {
     boolean scan;
 
     private Connection con;
+    private  Project currentProject = new Project();
+
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
@@ -67,10 +70,10 @@ public class ProjectCommand implements Callable<Integer> {
             }
             AsciiTable at = new AsciiTable();
             at.addRule();
-            at.addRow("ID","Name");
+            at.addRow("ID","Name","Type");
             for (Project project : projects) {
                 at.addRule();
-                at.addRow(project.getId(), project.getName());
+                at.addRow(project.getId(), project.getName(), project.getType());
             }
             at.addRule();
             String rend = at.render();
@@ -108,16 +111,6 @@ public class ProjectCommand implements Callable<Integer> {
                     preparedStatement.setString(4, project.getPathToDockerfile());
                     preparedStatement.execute();
                 }
-                ObjectMapper mapper = new ObjectMapper();
-                if(!optConfig.exists()){
-                    if(!optConfig.mkdirs()){
-                        System.out.println("An error has accrued please try again");
-                    }
-                }
-                FileWriter fileWriter = new FileWriter(optConfig);
-                BufferedWriter writer = new BufferedWriter(fileWriter);
-                writer.write(mapper.writeValueAsString(project));
-                writer.close();
             }
         }
         if(scan){
@@ -125,9 +118,20 @@ public class ProjectCommand implements Callable<Integer> {
                 spec.commandLine().usage(System.err);
             }
             String project = allParameters.get(0);
-            //TODO check if project exists
-                //TODO if not then give error
-            //TODO get project from db
+            System.out.println(project);
+            //TODO check if project exist
+            String sql = "SELECT * FROM project " +
+                    " WHERE name = ?";
+            try(PreparedStatement preparedStatement = con.prepareStatement(sql)){
+                try(ResultSet resultSet = preparedStatement.executeQuery()){
+                    if(resultSet.next()){
+                        currentProject.fromResultSet(resultSet);
+                    }else{
+                        System.out.println("No project was found");
+                        ok = false;
+                    }
+                }
+            }
             //TODO do scan
                 //TODO check for Dockerfile
                     //TODO if yes then build image
