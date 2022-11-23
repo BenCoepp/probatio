@@ -4,7 +4,9 @@ import de.bencoepp.utils.DbUtils;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.concurrent.Callable;
@@ -30,7 +32,7 @@ class InitCommand implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
-        try (ProgressBar pb = new ProgressBar("Test", 6)) {
+        try (ProgressBar pb = new ProgressBar("Test", 9)) {
             //TODO check if there was already a init
             String userDir = System.getProperty("user.dir");
             pb.step();
@@ -41,21 +43,80 @@ class InitCommand implements Callable<Integer> {
             }else{
                 //TODO create sql.db file in directory
                 optFile.createNewFile();
-                pb.step();
                 DbUtils dbUtils = new DbUtils();
                 con = dbUtils.getCon();
                 String sqlCreateProject = "CREATE TABLE project (" +
                         "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "  name varchar(255)" +
+                        "  path varchar(255)" +
+                        "  type INTEGER" +
+                        "  pathToDockerfile varchar(255)" +
                         ")";
-                pb.step();
                 Statement statement = con.createStatement();
-                pb.step();
                 statement.execute(sqlCreateProject);
-                pb.step();
             }
-            //TODO check for docker
+            //check for docker
+            Runtime rt = Runtime.getRuntime();
+            pb.step();
+            String[] commands = {"docker", "--version"};
+            pb.step();
+            Process proc = rt.exec(commands);
+            pb.step();
+            try( BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc.getInputStream()))){
+                try(BufferedReader stdError = new BufferedReader(new
+                        InputStreamReader(proc.getErrorStream()))){
+                    // Read the output from the command
+                    String s = null;
+                    while ((s = stdInput.readLine()) != null) {
+                        //TODO check vesion of docker and advice updating it
+                    }
+                    // Read any errors from the attempted command
+                    while ((s = stdError.readLine()) != null) {
+                        //TODO tell user to install or start docker
+                        ok = false;
+                    }
+                }
+            }
             //TODO check for docker compose
+            pb.step();
+            String[] commands1 = {"docker-compose", "--version"};
+            pb.step();
+            Process proc1 = rt.exec(commands1);
+            pb.step();
+            try( BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(proc1.getInputStream()))){
+                try(BufferedReader stdError = new BufferedReader(new
+                        InputStreamReader(proc1.getErrorStream()))){
+                    // Read the output from the command
+                    String s = null;
+                    while ((s = stdInput.readLine()) != null) {
+                        //TODO check vesion of docker compose and advice updating it
+                    }
+                    // Read any errors from the attempted command
+                    while ((s = stdError.readLine()) != null) {
+                        String[] commands2 = {"docker compose", "--version"};
+                        Process proc2 = rt.exec(commands2);
+                        try( BufferedReader stdInput1 = new BufferedReader(new
+                                InputStreamReader(proc2.getInputStream()))){
+                            try(BufferedReader stdError1 = new BufferedReader(new
+                                    InputStreamReader(proc2.getErrorStream()))){
+                                // Read the output from the command
+                                String s1 = null;
+                                while ((s1 = stdInput1.readLine()) != null) {
+                                    //TODO check vesion of docker and advice updating it
+                                }
+                                // Read any errors from the attempted command
+                                while ((s1 = stdError1.readLine()) != null) {
+                                    //TODO tell user to install or start docker compose
+                                    ok = false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            pb.step();
             //TODO check platofrm
             pb.setExtraMessage("Executing...");
         }
