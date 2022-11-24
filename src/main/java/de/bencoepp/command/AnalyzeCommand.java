@@ -38,13 +38,26 @@ public class AnalyzeCommand implements Callable<Integer> {
         boolean ok = true;
         String currentDir = System.getProperty("user.dir");
         List<File> listFiles = new ArrayList<>();
+        List<File> listDockerfiles = new ArrayList<>();
+        List<File> listDockerComposeFiles = new ArrayList<>();
         try (ProgressBar pb = new ProgressBar("Analyzing", 2)) {
             pb.setExtraMessage("Get Path...");
-
             pb.step();
             pb.setExtraMessage("Gathering files...");
             listFiles = DirectoryHelper.getFilesFromDirectory(currentDir);
             pb.step();
+            pb.setExtraMessage("Separating Files...");
+            for (File file : listFiles) {
+                if(file.getName().equals("Dockerfile")){
+                    listDockerfiles.add(file);
+                }
+                if(file.getName().equals("docker-compose.yaml")){
+                    listDockerComposeFiles.add(file);
+                }
+                if(file.getName().equals("docker-compose.yml")){
+                    listDockerComposeFiles.add(file);
+                }
+            }
             pb.setExtraMessage("Finished...");
         }
         String project = currentDir.substring(currentDir.lastIndexOf("\\") + 1 ,currentDir.length());
