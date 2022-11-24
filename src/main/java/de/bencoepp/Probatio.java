@@ -1,9 +1,7 @@
 package de.bencoepp;
 
-import de.bencoepp.command.InitCommand;
-import de.bencoepp.command.InstallCommand;
-import de.bencoepp.command.ProjectCommand;
-import de.bencoepp.command.ScanCommand;
+
+import de.bencoepp.command.AnalyzeCommand;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "probatio", mixinStandardHelpOptions = true, version = "demo v. 1.8",
@@ -11,10 +9,7 @@ import picocli.CommandLine;
         commandListHeading = "%nCommands:%n%nThe most commonly used probatio commands are:%n",
         footer = "%nSee 'probatio help <command>' to read about a specific subcommand or concept.",
         subcommands = {
-                InitCommand.class,
-                ProjectCommand.class,
-                InstallCommand.class,
-                ScanCommand.class,
+                AnalyzeCommand.class,
                 CommandLine.HelpCommand.class
         })
 public class Probatio implements Runnable{
