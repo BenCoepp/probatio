@@ -32,7 +32,7 @@ class InitCommand implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
-        try (ProgressBar pb = new ProgressBar("Test", 9)) {
+        try (ProgressBar pb = new ProgressBar("Init", 9)) {
             //TODO check if there was already a init
             String userDir = System.getProperty("user.dir");
             pb.step();
