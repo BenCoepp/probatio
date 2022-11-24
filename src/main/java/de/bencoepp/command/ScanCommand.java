@@ -34,7 +34,7 @@ public class ScanCommand implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
-        try (ProgressBar pb = new ProgressBar("Scanning", 9)) {
+        try (ProgressBar pb = new ProgressBar("Scanning", 3)) {
             pb.setExtraMessage("Checking Dockerfile...");
             pb.step();
             if(all && !dockerfile && !dockercompose){
@@ -50,7 +50,7 @@ public class ScanCommand implements Callable<Integer> {
 
     private boolean checkDockerfile() throws IOException {
         String[] buildImage = {"docker", "build -t probatio/test ."};
-        executeCommand(buildImage,false);
+        executeCommand(buildImage,true);
         /*String[] aptUpdate = {"apt-get", "update"};
         executeCommand(aptUpdate,false);
         String[] installScan = {"apt-get", "install docker-scan-plugin"};
