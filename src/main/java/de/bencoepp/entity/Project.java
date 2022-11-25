@@ -2,13 +2,18 @@ package de.bencoepp.entity;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 public class Project {
     private String title;
     private String description;
     private Boolean deployment;
     private Boolean integration;
-    private ArrayList<DeploymentStep> deploymentStepList;
-    private ArrayList<IntegrationStep> integrationStepList;
+    private ArrayList<DeploymentStep> deploymentStepList = new ArrayList<>();
+    private ArrayList<IntegrationStep> integrationStepList = new ArrayList<>();
+
+
 
     public String getTitle() {
         return title;
@@ -56,5 +61,28 @@ public class Project {
 
     public void setIntegrationStepList(ArrayList<IntegrationStep> integrationStepList) {
         this.integrationStepList = integrationStepList;
+    }
+
+    public void fromJson(String json) throws JsonProcessingException {
+        this.title = JsonPath.read(json, "$.project.title");
+        this.description = JsonPath.read(json, "$.project.description");
+        this.deployment = JsonPath.read(json, "$.project.deployment");
+        this.integration = JsonPath.read(json, "$.project.integration");
+        int countIntegration = JsonPath.read(json, "$.project.integrationStepList.length()");
+        for (int i = 0; i < countIntegration; i++) {
+            IntegrationStep integrationStep = new IntegrationStep();
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonObject = mapper.writeValueAsString(JsonPath.read(json,"$.project.integrationStepList["+ i + "]"));
+            integrationStep.fromJson(jsonObject);
+            this.integrationStepList.add(integrationStep);
+        }
+        int countDeployment= JsonPath.read(json, "$.project.deploymentStepList.length()");
+        for (int i = 0; i < countDeployment; i++) {
+            DeploymentStep deploymentStep = new DeploymentStep();
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonObject = mapper.writeValueAsString(JsonPath.read(json,"$.project.deploymentStepList["+ i + "]"));
+            deploymentStep.fromJson(jsonObject);
+            this.deploymentStepList.add(deploymentStep);
+        }
     }
 }

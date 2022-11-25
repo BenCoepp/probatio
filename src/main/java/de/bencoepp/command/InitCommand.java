@@ -4,11 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import de.bencoepp.entity.DeploymentStep;
+import de.bencoepp.entity.IntegrationStep;
 import de.bencoepp.entity.Project;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "init",
@@ -52,39 +57,24 @@ public class InitCommand implements Callable<Integer> {
                 }
             }else{
                 createProjectFile(currentDir);
+                System.out.println("Project file was created");
             }
         }
         if(check && !force){
-            try (ProgressBar pb = new ProgressBar("Analyzing", 9)) {
+            try (ProgressBar pb = new ProgressBar("Analyzing", 5)) {
                 pb.setExtraMessage("Scanning...");
                 pb.step();
-                String json = "";
-                BufferedReader reader;
-                pb.step();
-                try {
-                    reader = new BufferedReader(new FileReader("probatio.json"));
-                    pb.step();
-                    String line = reader.readLine();
-                    pb.step();
-                    while (line != null) {
-                        System.out.println(line);
-                        line = reader.readLine();
-                        json += reader.readLine();
-                    }
-                    pb.step();
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String json = Files.readString(Path.of("probatio.json")) ;
                 try {
                     pb.step();
-                    ObjectMapper mapper = new ObjectMapper();
                     pb.step();
-                    Project project = mapper.readValue(json, Project.class);
+                    Project project = new Project();
+                    project.fromJson(json);
                     pb.step();
                     System.out.println("Project read successfully you can continue with your work.");
                     pb.step();
                 } catch (Exception e) {
+                    System.out.println(e);
                     System.out.println("An error has accused while reading the project, please check the configuration file.");
                 }
             }
@@ -100,10 +90,18 @@ public class InitCommand implements Callable<Integer> {
         Project project = new Project();
         project.setTitle(projectTitle);
         project.setDescription("");
+        ArrayList<DeploymentStep> deploymentSteps = new ArrayList<>();
+        deploymentSteps.add(new DeploymentStep());
+        ArrayList<IntegrationStep> integrationSteps = new ArrayList<>();
+        integrationSteps.add(new IntegrationStep());
+        project.setDeployment(true);
+        project.setIntegration(true);
+        project.setIntegrationStepList(integrationSteps);
+        project.setDeploymentStepList(deploymentSteps);
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(project);
         try (PrintWriter out = new PrintWriter("probatio.json")) {
-            out.println(json);
+            out.println("{\"project\":" + json + "}");
         }
     }
 }
