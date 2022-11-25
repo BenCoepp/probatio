@@ -47,6 +47,7 @@ public class InitCommand implements Callable<Integer> {
                 if(force){
                     optFile.delete();
                     createProjectFile(currentDir);
+                    System.out.println("Project file was created");
                 }else{
                     System.out.println("There is already a project file in this directory. You can edit this file" +
                             " or run the following command to delete it and create a new one.");
