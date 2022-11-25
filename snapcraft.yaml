@@ -42,5 +42,3 @@ parts:
       [ -DskipTests=true ]
     maven-targets:
       - probatio
-    stage-packages:
-      - openjdk-19-jre
