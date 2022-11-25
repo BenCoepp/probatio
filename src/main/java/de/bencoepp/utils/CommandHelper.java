@@ -19,9 +19,11 @@ public class CommandHelper {
         String s = null;
         while ((s = stdInput.readLine()) != null) {
         }
+        boolean ok = true;
         while ((s = stdError.readLine()) != null) {
+            ok = false;
         }
-        return true;
+        return ok;
     }
 
     public static String executeCommandWithOutput(String[] commands) throws IOException, IOException {
