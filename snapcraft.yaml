@@ -28,9 +28,7 @@ license: MIT
 
 apps:
   probatio:
-    extensions:
-      - gnome-3-28
-    command: usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar $SNAP/linotte-lanceur/Atelier.jar
+    command: usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar $SNAP/probatio/target/probatio-1.0-SNAPSHOT.jar
     plugs: [ home, network]
     environment:
       _JAVA_OPTIONS: -Duser.home=$SNAP_USER_DATA
@@ -38,7 +36,7 @@ parts:
   probatio:
     plugin: maven
     source: https://github.com/BenCoepp/probatio.git
-    source-tag: v3.14
+    source-tag: main
     source-type: git
     maven-options:
       [ -DskipTests=true ]
@@ -46,6 +44,3 @@ parts:
       - probatio
     stage-packages:
       - openjdk-17-jre
-    override-prime: |
-      snapcraftctl prime
-      rm -vf usr/lib/jvm/java-11-openjdk-*/lib/security/blacklisted.certs
