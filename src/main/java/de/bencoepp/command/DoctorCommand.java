@@ -66,6 +66,9 @@ public class DoctorCommand implements Callable<Integer> {
             }
             printReport(issues);
         }
+        if(fix && !verbose){
+            //TODO add fix command here
+        }
         if(!verbose && !fix){
             System.out.println("Doctor summary (to see all details, run probatio doctor -v):");
             for (CheckElement element : list) {

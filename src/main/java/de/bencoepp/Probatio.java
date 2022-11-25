@@ -3,6 +3,7 @@ package de.bencoepp;
 
 import de.bencoepp.command.AnalyzeCommand;
 import de.bencoepp.command.DoctorCommand;
+import de.bencoepp.command.InitCommand;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "probatio", mixinStandardHelpOptions = true, version = "demo v. 1.8",
@@ -12,6 +13,7 @@ import picocli.CommandLine;
         subcommands = {
                 AnalyzeCommand.class,
                 DoctorCommand.class,
+                InitCommand.class,
                 CommandLine.HelpCommand.class
         })
 public class Probatio implements Runnable{
