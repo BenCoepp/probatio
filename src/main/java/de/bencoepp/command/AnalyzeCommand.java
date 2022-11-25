@@ -1,5 +1,6 @@
 package de.bencoepp.command;
 
+import de.bencoepp.utils.CommandHelper;
 import de.bencoepp.utils.DirectoryHelper;
 import me.tongfei.progressbar.ProgressBar;
 import org.barfuin.texttree.api.DefaultNode;
@@ -94,6 +95,16 @@ public class AnalyzeCommand implements Callable<Integer> {
                 pb.step();
                 for (File dockerfile : listDockerfiles) {
                     pb.step();
+                    String[] dockerVersion = {"docker", "--version"};
+                    File dir = new File(dockerfile.getPath().replace("\\Dockerfile",""));
+                    if(CommandHelper.executeCommand(dockerVersion,dir)){
+                        String[] dockerBuild = {"docker", "build", "-t", "probatio/test", "."};
+                        CommandHelper.executeCommand(dockerBuild,dir);
+                        String[] dockerAcceptScan = {"docker", "scan", "--accept-license", "--version"};
+                        CommandHelper.executeCommand(dockerAcceptScan,dir);
+                        String[] dockerScan = {"docker", "scan", "probatio/test"};
+                        String out = CommandHelper.executeCommandWithOutput(dockerScan);
+                    }
                 }
                 pb.step();
                 for (File dockerComposeFile : listDockerComposeFiles) {
