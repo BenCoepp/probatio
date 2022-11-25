@@ -28,7 +28,7 @@ license: MIT
 
 apps:
   probatio:
-    command: usr/lib/jvm/java-17-openjdk-amd64/bin/java -jar $SNAP/probatio/target/probatio-1.0-SNAPSHOT.jar
+    command: usr/lib/jvm/java-19-openjdk-amd64/bin/java -jar $SNAP/probatio/target/probatio-1.0-SNAPSHOT.jar
     plugs: [ home, network]
     environment:
       _JAVA_OPTIONS: -Duser.home=$SNAP_USER_DATA
@@ -43,4 +43,4 @@ parts:
     maven-targets:
       - probatio
     stage-packages:
-      - openjdk-17-jre
+      - openjdk-19-jre
