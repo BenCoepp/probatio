@@ -2,6 +2,7 @@ package de.bencoepp.command;
 
 import de.bencoepp.entity.CheckElement;
 import de.bencoepp.utils.CommandHelper;
+import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -36,9 +37,17 @@ public class DoctorCommand implements Callable<Integer> {
     public Integer call() throws Exception {
         boolean ok = true;
         ArrayList<CheckElement> list = new ArrayList<>();
-        list.add(checkDocker());
-        list.add(checkDockerCompose());
-        list.add(checkKubectl());
+        try (ProgressBar pb = new ProgressBar("Analyzing", 4)) {
+            pb.setExtraMessage("Check Applications...");
+            pb.step();
+            list.add(checkDocker());
+            pb.step();
+            list.add(checkDockerCompose());
+            pb.step();
+            list.add(checkKubectl());
+            pb.step();
+        }
+
         int issues = 0;
         for (CheckElement element : list) {
             if(!element.getCheck()){
