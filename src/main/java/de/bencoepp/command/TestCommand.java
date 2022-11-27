@@ -1,5 +1,6 @@
 package de.bencoepp.command;
 
+import de.bencoepp.entity.CheckElement;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
@@ -61,5 +62,15 @@ public class TestCommand implements Callable<Integer> {
             }
         }
         return ok ? 0 : 1;
+    }
+
+    private CheckElement testDocker(){
+        CheckElement checkElement = new CheckElement();
+        try (ProgressBar pb = new ProgressBar("Testing", 4)) {
+            pb.setExtraMessage("Testing Docker...");
+            pb.step();
+            
+        }
+        return checkElement;
     }
 }
