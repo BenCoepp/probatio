@@ -57,7 +57,7 @@ public class MonitorCommand implements Callable<Integer> {
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                 }
                 else {
-                    Runtime.getRuntime().exec(new String[]{"reset"});
+                    //Runtime.getRuntime().exec(new String[]{"reset"});
                 }
             }
             catch (final Exception e) {
