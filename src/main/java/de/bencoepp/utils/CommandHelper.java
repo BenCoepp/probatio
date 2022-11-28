@@ -48,14 +48,14 @@ public class CommandHelper {
 
             String s = null;
             while ((s = stdInput.readLine()) != null) {
-                output += s;
+                output += "\n" + s;
             }
             while ((s = stdError.readLine()) != null) {
-                output += s;
+                output += "\n" + s;
             }
 
         }catch (Exception e){
-            System.out.println(e);
+            output += "\n" + e;
         }
         return output;
     }

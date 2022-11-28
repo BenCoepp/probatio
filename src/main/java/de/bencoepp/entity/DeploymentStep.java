@@ -5,6 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 public class DeploymentStep {
     private String title;
     private String description;
+    private String command;
 
     public String getTitle() {
         return title;
@@ -22,8 +23,17 @@ public class DeploymentStep {
         this.description = description;
     }
 
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
     public void fromJson(String jsonObject) {
         this.title = JsonPath.read(jsonObject, "$.title");
         this.description = JsonPath.read(jsonObject, "$.description");
+        this.command = JsonPath.read(jsonObject, "$.command");
     }
 }

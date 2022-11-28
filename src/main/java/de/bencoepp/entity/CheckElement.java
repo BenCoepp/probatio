@@ -37,4 +37,13 @@ public class CheckElement {
     public void setInfo(String info) {
         this.info = info;
     }
+
+    public void print(boolean verbose){
+        if(this.check){
+            System.out.println("[√] " + this.title + " (" + this.description + ")");
+        }else{
+            System.out.println("[!] " + this.title + " (" + this.description + ")");
+        }
+        System.out.println(this.info);
+    }
 }

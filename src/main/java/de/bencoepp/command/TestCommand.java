@@ -1,9 +1,16 @@
 package de.bencoepp.command;
 
 import de.bencoepp.entity.CheckElement;
+import de.bencoepp.entity.Project;
+import de.bencoepp.utils.IntegrationHelper;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "test",
@@ -13,64 +20,59 @@ import java.util.concurrent.Callable;
         descriptionHeading = "%n@|bold,underline Description:|@%n%n",
         parameterListHeading = "%n@|bold,underline Parameters:|@%n",
         optionListHeading = "%n@|bold,underline Options:|@%n",
-        header = "test local system in all kinds of ways",
-        description = "use this command to test your system in a variety of ways")
+        header = "test specific project in a variety of different ways",
+        description = "use this command to test your project in a variety of ways")
 public class TestCommand implements Callable<Integer> {
-    @CommandLine.Parameters(paramLabel = "<drivers>", defaultValue = "docker",
-            description = "comma seperated list of drivers to test")
-    private String[] drivers;
-    @CommandLine.Option(names = {"-e", "--everything"},
-            description = "test everything")
-    boolean everything;
+    @CommandLine.Option(names = {"-s", "--shallow"},
+            description = "test project only shallowly")
+    boolean shallow;
 
-    @CommandLine.Option(names = {"-f", "--functionality"},
-            description = "test for functionality")
-    boolean functionality;
-
-    @CommandLine.Option(names = {"-a", "--application"},
-            description = "test for applications")
-    boolean application;
+    @CommandLine.Option(names = {"-d", "--deep"},
+            description = "test project as deep as possible")
+    boolean deep;
 
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
     @Override
-    public Integer call() {
+    public Integer call() throws IOException {
         boolean ok = true;
-        int count = 0;
-        if(everything){
-            count = 1;
-        } else if (functionality) {
-            count = 2;
-        }else if (application){
-            count = 3;
+        String currentDir = System.getProperty("user.dir");
+        Project project = new Project();
+        File optFile = new File("probatio.json");
+        if(optFile.exists()){
+            try (ProgressBar pb = new ProgressBar("Testing", 5)) {
+                pb.setExtraMessage("Loading Project...");
+                try{
+                    pb.step();
+                    String json = Files.readString(Path.of("probatio.json"));
+                    pb.step();
+                    pb.step();
+                    project.fromJson(json);
+                    pb.step();
+                    System.out.println("Project read successfully you can continue with your work.");
+                    pb.step();
+                }catch (Exception e){
+                    ok = false;
+                    System.out.println(e);
+                    System.out.println("An error has accused while reading the project, please check the configuration file.");
+                }
+            }
+        }else{
+            System.out.println("There is no project file in this directory please make sure to run the following command:");
+            System.out.println("    probatio init");
+            System.out.println("");
+            System.out.println("Make sure to fill the created project file with your necessary information");
         }
-        try (ProgressBar pb = new ProgressBar("Testing", count)) {
-            pb.setExtraMessage("Checking Drivers...");
-            String currentDir = System.getProperty("user.dir");
-            if(everything && !functionality && !application){
-
-            }
-            if(functionality && !everything && !application){
-
-            }
-            if(application && !everything && !functionality){
-
-            }
-            if (!everything && !functionality && !application) {
-                spec.commandLine().usage(System.err);
-            }
+        if(shallow && !deep && ok){
+            ArrayList<CheckElement> list = IntegrationHelper.executeIntegration(project);
+        }
+        if(deep && !shallow && ok){
+            ArrayList<CheckElement> list = IntegrationHelper.executeIntegration(project);
+        }
+        if(!shallow && !deep){
+            spec.commandLine().usage(System.err);
         }
         return ok ? 0 : 1;
-    }
-
-    private CheckElement testDocker(){
-        CheckElement checkElement = new CheckElement();
-        try (ProgressBar pb = new ProgressBar("Testing", 4)) {
-            pb.setExtraMessage("Testing Docker...");
-            pb.step();
-            
-        }
-        return checkElement;
     }
 }

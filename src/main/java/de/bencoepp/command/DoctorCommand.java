@@ -57,12 +57,7 @@ public class DoctorCommand implements Callable<Integer> {
         if(verbose && !fix){
             System.out.println("Doctor summary (to see less details, run probatio doctor):");
             for (CheckElement element : list) {
-                if(element.getCheck()){
-                    System.out.println("[√] " + element.getTitle() + " (" + element.getDescription() + ")");
-                }else{
-                    System.out.println("[!] " + element.getTitle() + " (" + element.getDescription() + ")");
-                }
-                System.out.println(element.getInfo());
+                element.print(verbose);
             }
             printReport(issues);
         }
@@ -72,11 +67,7 @@ public class DoctorCommand implements Callable<Integer> {
         if(!verbose && !fix){
             System.out.println("Doctor summary (to see all details, run probatio doctor -v):");
             for (CheckElement element : list) {
-                if(element.getCheck()){
-                    System.out.println("[√] " + element.getTitle() + " (" + element.getDescription() + ")");
-                }else{
-                    System.out.println("[!] " + element.getTitle() + " (" + element.getDescription() + ")");
-                }
+                element.print(verbose);
             }
             printReport(issues);
         }
