@@ -1,9 +1,11 @@
 package de.bencoepp.command;
 
 import de.bencoepp.utils.CommandHelper;
+import org.bouncycastle.eac.EACIOException;
 import picocli.CommandLine;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.Callable;
@@ -38,7 +40,12 @@ public class MonitorCommand implements Callable<Integer> {
         String currentDir = System.getProperty("user.dir");
 
         if(local && !remote){
-            print();
+
+            long total = 999999999;
+            for (int i = 0; i < total; i++) {
+                print();
+            }
+
         }
         if(!local && !remote){
             spec.commandLine().usage(System.err);
@@ -46,10 +53,14 @@ public class MonitorCommand implements Callable<Integer> {
         return ok ? 0 : 1;
     }
 
-    private void print() throws UnknownHostException {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getInfoHeader());
-        System.out.print(stringBuilder.toString());
+    private void print() throws IOException, InterruptedException {
+        while (true){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(getInfoHeader());
+            System.out.print(stringBuilder.toString());
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+        }
     }
 
     private String getInfoHeader() throws UnknownHostException {
