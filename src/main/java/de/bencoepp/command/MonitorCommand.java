@@ -4,6 +4,7 @@ import de.bencoepp.utils.CommandHelper;
 import org.bouncycastle.eac.EACIOException;
 import picocli.CommandLine;
 
+import java.io.Console;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -40,12 +41,7 @@ public class MonitorCommand implements Callable<Integer> {
         String currentDir = System.getProperty("user.dir");
 
         if(local && !remote){
-
-            long total = 999999999;
-            for (int i = 0; i < total; i++) {
-                print();
-            }
-
+            print();
         }
         if(!local && !remote){
             spec.commandLine().usage(System.err);
@@ -55,19 +51,58 @@ public class MonitorCommand implements Callable<Integer> {
 
     private void print() throws IOException, InterruptedException {
         while (true){
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(getInfoHeader());
-            System.out.print(stringBuilder.toString());
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             System.out.print("\033[H\033[2J");
             System.out.flush();
-            //Clears Screen in java
-            try {
-                if (System.getProperty("os.name").contains("Windows"))
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                else
-                    Runtime.getRuntime().exec("clear");
-            } catch (IOException | InterruptedException ex) {}
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(getInfoHeader());
+            stringBuilder.append(getRuntimes());
+            System.out.print(stringBuilder);
+            Thread.sleep(5000);
         }
+    }
+
+    private String getRuntimes() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n╭─ Runtimes ");
+        for (int i = 0; i < width - 80; i++) {
+            stringBuilder.append("─");
+        }
+        stringBuilder.append("─╮");
+        stringBuilder.append("╭─ Performance ");
+        for (int i = 0; i < width - 46; i++) {
+            stringBuilder.append("─");
+        }
+        stringBuilder.append("─╮");
+        stringBuilder.append("\n");
+        for (int j = 0; j < 5; j++) {
+            String str = "│  Docker v20.152.122 ";
+
+            stringBuilder.append(str);
+            for (int i = 0; i < width-str.length() - 67; i++) {
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append("│");
+            String str1 = "│   ";
+
+            stringBuilder.append(str1);
+            for (int i = 0; i < width-str1.length() - 30; i++) {
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append("│\n");
+        }
+        stringBuilder.append("╰──");
+        for (int i = 0; i < width -71; i++) {
+            stringBuilder.append("─");
+        }
+        stringBuilder.append("─╯");
+        stringBuilder.append("╰──");
+        for (int i = 0; i < width -34; i++) {
+            stringBuilder.append("─");
+        }
+        stringBuilder.append("─╯");
+
+        return stringBuilder.toString();
     }
 
     private String getInfoHeader() throws UnknownHostException {
