@@ -14,6 +14,7 @@ import picocli.CommandLine;
                 InitCommand.class,
                 AuthCommand.class,
                 TestCommand.class,
+                MonitorCommand.class,
                 CommandLine.HelpCommand.class
         })
 public class Probatio implements Runnable{
