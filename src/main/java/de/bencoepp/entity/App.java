@@ -21,6 +21,9 @@ public class App {
     private Integer status;
     private Integer appStatus;
     private ArrayList<Project> projects;
+    private Integer user;
+    private String email;
+    private String password;
 
     private String currentDir = System.getProperty("user.dir");
 
@@ -85,6 +88,33 @@ public class App {
 
     public void setHostname(String hostname) throws IOException {
         this.hostname = hostname;
+        update();
+    }
+
+    public Integer getUser() {
+        return user;
+    }
+
+    public void setUser(Integer user) throws IOException {
+        this.user = user;
+        update();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) throws IOException {
+        this.email = email;
+        update();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) throws IOException {
+        this.password = password;
         update();
     }
 
