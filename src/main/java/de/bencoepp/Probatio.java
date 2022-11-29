@@ -2,7 +2,10 @@ package de.bencoepp;
 
 
 import de.bencoepp.command.*;
+import de.bencoepp.entity.App;
 import picocli.CommandLine;
+
+import java.io.IOException;
 
 @CommandLine.Command(name = "probatio", mixinStandardHelpOptions = true, version = "demo v. 1.8",
         description = "The easiest and best way to test any docker application and generate deployments",
@@ -26,7 +29,11 @@ public class Probatio implements Runnable{
 
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
-    public static void main(String... args) {
+
+    public Probatio() throws IOException {
+    }
+
+    public static void main(String... args) throws IOException {
         System.exit(new CommandLine(new Probatio()).execute(args));
     }
 
@@ -34,4 +41,5 @@ public class Probatio implements Runnable{
     public void run() {
         spec.commandLine().usage(System.err);
     }
+
 }

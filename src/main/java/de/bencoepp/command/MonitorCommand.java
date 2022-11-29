@@ -1,5 +1,6 @@
 package de.bencoepp.command;
 
+import de.bencoepp.entity.App;
 import picocli.CommandLine;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,12 +30,12 @@ public class MonitorCommand implements Callable<Integer> {
 
     private Integer width = 100;
     private Integer height = 480;
-
+    private App app;
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
         String currentDir = System.getProperty("user.dir");
-
+        app.init();
         if(local && !remote){
             print();
         }
@@ -118,9 +119,7 @@ public class MonitorCommand implements Callable<Integer> {
         }
         stringBuilder.append("─╮");
         stringBuilder.append("\n");
-        String hostname = InetAddress.getLocalHost().getHostName();
-        String ip = InetAddress.getLocalHost().toString();
-        String str = "│  Hostname: " + hostname + "   IP: " + ip + "  Status: OK";
+        String str = "│  Hostname: " + app.getHostname() + "   IP: " + app.getIp() + "  Status: OK";
 
         stringBuilder.append(str);
         for (int i = 0; i < width-str.length() + 4; i++) {
