@@ -1,9 +1,16 @@
 package de.bencoepp.command;
 
 import de.bencoepp.entity.App;
+import de.bencoepp.utils.CommandHelper;
+import de.bencoepp.utils.asciichart.AsciiChart;
+import de.bencoepp.utils.asciichart.chart.BarChart;
+import de.bencoepp.utils.asciichart.chart.entity.BarElement;
+import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "monitor",
@@ -30,12 +37,37 @@ public class MonitorCommand implements Callable<Integer> {
     private Integer width = 100;
     private Integer height = 480;
     private App app = new App();
+    private BarChart runtimePerformace;
+
+    private ArrayList<String> runtimes = new ArrayList<>();
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
         String currentDir = System.getProperty("user.dir");
         app.init();
+        try (ProgressBar pb = new ProgressBar("Retrieving", 7)) {
+            pb.setExtraMessage("Data...");
+            pb.step();
+            String[] dockerVersion = {"docker", "--version"};
+            pb.step();
+            String dockerVersionOut = CommandHelper.executeCommandWithOutput(dockerVersion);
+            pb.step();
+            runtimes.add(dockerVersionOut.split(",")[0].replace("\n",""));
+            pb.step();
+            String[] dockerComposeVersion = {"docker-compose", "--version"};
+            pb.step();
+            String dockerComposeVersionOut = CommandHelper.executeCommandWithOutput(dockerComposeVersion);
+            pb.step();
+            runtimes.add(dockerComposeVersionOut.replace("version ", "").replace("\n",""));
+            pb.step();
+        }
         if(local && !remote){
+            BarChart barChart = new BarChart();
+            ArrayList<BarElement> barElements = new ArrayList<>();
+            barElements.add(new BarElement("Docker", "",new BigDecimal("28")));
+            barElements.add(new BarElement("Docker Compose", "",new BigDecimal("22")));
+            barChart.setElements(barElements);
+            runtimePerformace = barChart;
             print();
         }
         if(!local && !remote){
@@ -80,15 +112,15 @@ public class MonitorCommand implements Callable<Integer> {
         }
         stringBuilder.append("─╮");
         stringBuilder.append("\n");
-        for (int j = 0; j < 5; j++) {
-            String str = "│  Docker v20.152.122 ";
+        for (int j = 0; j < runtimes.size(); j++) {
+            String str = "│ " + runtimes.get(j);
 
             stringBuilder.append(str);
             for (int i = 0; i < width-str.length() - 67; i++) {
                 stringBuilder.append(" ");
             }
             stringBuilder.append("│");
-            String str1 = "│   ";
+            String str1 = "│" + AsciiChart.getBarChartByLine(runtimePerformace, j);
 
             stringBuilder.append(str1);
             for (int i = 0; i < width-str1.length() - 30; i++) {

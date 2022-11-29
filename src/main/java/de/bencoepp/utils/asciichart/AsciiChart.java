@@ -1,6 +1,9 @@
 package de.bencoepp.utils.asciichart;
 
 import de.bencoepp.utils.asciichart.chart.Chart;
+import de.bencoepp.utils.asciichart.chart.entity.BarElement;
+
+import java.util.ArrayList;
 
 /** AsciiChart is the all in one solution to building and displaying charts within
  * a console environment. It can be used in other places as well, for instance in
@@ -23,5 +26,10 @@ public class AsciiChart {
      */
     public static String render(Chart chart){
         return chart.render();
+    }
+
+    public static String getBarChartByLine(Chart chart, Integer line){
+        String[] lines = chart.getLinesAsString();
+        return lines[line];
     }
 }

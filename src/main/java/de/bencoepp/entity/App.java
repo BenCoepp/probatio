@@ -75,7 +75,9 @@ public class App {
         String homeDir = System.getProperty("user.home");
         File probatio_conf = new File(homeDir + "\\probatio\\probatio_conf.json");
         String json = ow.writeValueAsString(this);
-        Files.delete(Paths.get(homeDir + "\\probatio\\probatio_conf.json"));
+        if(probatio_conf.exists()){
+            Files.delete(Paths.get(homeDir + "\\probatio\\probatio_conf.json"));
+        }
         Files.createDirectories(Paths.get(homeDir + "\\probatio"));
         try (PrintWriter out = new PrintWriter(probatio_conf.getAbsolutePath())) {
             out.println("{\"app\":" + json + "}");

@@ -58,6 +58,12 @@ public class BarChart extends Chart{
         return max;
     }
 
+    @Override
+    public String[] getLinesAsString() {
+        String out = render();
+        return out.split("\n");
+    }
+
     public ArrayList<BarElement> getElements() {
         return elements;
     }
