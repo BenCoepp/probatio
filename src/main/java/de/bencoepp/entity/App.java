@@ -29,7 +29,7 @@ public class App {
 
     public void init() throws IOException {
         String homeDir = System.getProperty("user.home");
-        File probatio_conf = new File(homeDir + "\\probatio\\probatio_conf.json");
+        File probatio_conf = new File(homeDir + "//probatio//probatio_conf.json");
         if(probatio_conf.exists()){
             String json = Files.readString(Path.of(probatio_conf.getAbsolutePath())) ;
             fromJson(json);
@@ -41,7 +41,7 @@ public class App {
             app.setIp(InetAddress.getLocalHost().toString());
             app.setProjects(new ArrayList<>());
             String json = ow.writeValueAsString(app);
-            Files.createDirectories(Paths.get(homeDir + "\\probatio"));
+            Files.createDirectories(Paths.get(homeDir + "//probatio"));
             try (PrintWriter out = new PrintWriter(probatio_conf.getAbsolutePath())) {
                 out.println("{\"app\":" + json + "}");
             }
@@ -73,12 +73,12 @@ public class App {
     public void update() throws IOException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String homeDir = System.getProperty("user.home");
-        File probatio_conf = new File(homeDir + "\\probatio\\probatio_conf.json");
+        File probatio_conf = new File(homeDir + "/probatio/probatio_conf.json");
         String json = ow.writeValueAsString(this);
         if(probatio_conf.exists()){
-            Files.delete(Paths.get(homeDir + "\\probatio\\probatio_conf.json"));
+            Files.delete(Paths.get(homeDir + "/probatio/probatio_conf.json"));
         }
-        Files.createDirectories(Paths.get(homeDir + "\\probatio"));
+        Files.createDirectories(Paths.get(homeDir + "/probatio"));
         try (PrintWriter out = new PrintWriter(probatio_conf.getAbsolutePath())) {
             out.println("{\"app\":" + json + "}");
         }
