@@ -2,17 +2,26 @@ package de.bencoepp.command;
 
 import de.bencoepp.utils.CommandHelper;
 import de.bencoepp.utils.DirectoryHelper;
+import de.bencoepp.utils.asciichart.AsciiChart;
+import de.bencoepp.utils.asciichart.chart.BarChart;
+import de.bencoepp.utils.asciichart.chart.entity.BarElement;
 import me.tongfei.progressbar.ProgressBar;
+import org.apache.commons.io.FilenameUtils;
 import org.barfuin.texttree.api.DefaultNode;
 import org.barfuin.texttree.api.TextTree;
 import org.barfuin.texttree.api.TreeOptions;
 import org.barfuin.texttree.api.style.TreeStyle;
 import picocli.CommandLine;
 import java.io.File;
+import java.math.BigDecimal;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.logging.FileHandler;
+import java.util.stream.Collectors;
 
 @CommandLine.Command(name = "analyze",
         sortOptions = false,
@@ -28,42 +37,46 @@ public class AnalyzeCommand implements Callable<Integer> {
             description = "visualize project as tree")
     boolean tree;
 
-    @CommandLine.Option(names = {"-s", "--scan"},
-            description = "scan docker and docker compose files")
-    boolean scan;
+    @CommandLine.Option(names = {"-c", "--chart"},
+            description = "visualize project as charts")
+    boolean chart;
 
+    @CommandLine.Parameters(description = "chart you want to run analysis on", arity = "0..1")
+    private String chartType;
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
+
+    private int width = 100;
 
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
         String currentDir = System.getProperty("user.dir");
-        List<File> listFiles = new ArrayList<>();
-        List<File> listDockerfiles = new ArrayList<>();
-        List<File> listDockerComposeFiles = new ArrayList<>();
-        try (ProgressBar pb = new ProgressBar("Analyzing", 2)) {
-            pb.setExtraMessage("Get Path...");
-            pb.step();
-            pb.setExtraMessage("Gathering files...");
-            listFiles = DirectoryHelper.getFilesFromDirectory(currentDir);
-            pb.step();
-            pb.setExtraMessage("Separating Files...");
-            for (File file : listFiles) {
-                if(file.getName().equals("Dockerfile")){
-                    listDockerfiles.add(file);
+        if(tree && !chart){
+            List<File> listFiles = new ArrayList<>();
+            List<File> listDockerfiles = new ArrayList<>();
+            List<File> listDockerComposeFiles = new ArrayList<>();
+            try (ProgressBar pb = new ProgressBar("Analyzing", 2)) {
+                pb.setExtraMessage("Get Path...");
+                pb.step();
+                pb.setExtraMessage("Gathering files...");
+                listFiles = DirectoryHelper.getFilesFromDirectory(currentDir);
+                pb.step();
+                pb.setExtraMessage("Separating Files...");
+                for (File file : listFiles) {
+                    if(file.getName().equals("Dockerfile")){
+                        listDockerfiles.add(file);
+                    }
+                    if(file.getName().equals("docker-compose.yaml")){
+                        listDockerComposeFiles.add(file);
+                    }
+                    if(file.getName().equals("docker-compose.yml")){
+                        listDockerComposeFiles.add(file);
+                    }
                 }
-                if(file.getName().equals("docker-compose.yaml")){
-                    listDockerComposeFiles.add(file);
-                }
-                if(file.getName().equals("docker-compose.yml")){
-                    listDockerComposeFiles.add(file);
-                }
+                pb.setExtraMessage("Finished...");
             }
-            pb.setExtraMessage("Finished...");
-        }
-        String project = currentDir.substring(currentDir.lastIndexOf("\\") + 1 ,currentDir.length());
-        if(tree && !scan){
+            String project = currentDir.substring(currentDir.lastIndexOf("\\") + 1 ,currentDir.length());
             DefaultNode tree = new DefaultNode(project);
             for (ListIterator<File> iter = listFiles.listIterator(); iter.hasNext(); ) {
                 File element = iter.next();
@@ -88,32 +101,66 @@ public class AnalyzeCommand implements Callable<Integer> {
             String rendered = TextTree.newInstance(options).render(tree);
             System.out.println(rendered);
         }
-        if(scan && !tree){
-            int count = listDockerfiles.size() + listDockerComposeFiles.size() + 3;
-            try (ProgressBar pb = new ProgressBar("Analyzing", count)) {
-                pb.setExtraMessage("Scanning files...");
-                pb.step();
-                for (File dockerfile : listDockerfiles) {
-                    pb.step();
-                    String[] dockerVersion = {"docker", "--version"};
-                    File dir = new File(dockerfile.getPath().replace("\\Dockerfile",""));
-                    if(CommandHelper.executeCommand(dockerVersion,dir)){
-                        String[] dockerBuild = {"docker", "build", "-t", "probatio/test", "."};
-                        CommandHelper.executeCommand(dockerBuild,dir);
-                        String[] dockerAcceptScan = {"docker", "scan", "--accept-license", "--version"};
-                        CommandHelper.executeCommand(dockerAcceptScan,dir);
-                        String[] dockerScan = {"docker", "scan", "probatio/test"};
-                        String out = CommandHelper.executeCommandWithOutput(dockerScan);
+        if(chart && !tree){
+            if(chartType == null){
+                System.out.println("Please provide a chart type to the chart option in order to print out a corresponding chart.");
+                System.out.println("Following chart types are available:");
+                System.out.println("    bar <filetype>");
+                System.out.println();
+                System.out.println("Please execute the following command with your desired type of chart and filter");
+                System.out.println("    probatio --chart <chartType> <filter>");
+            }
+            if(chartType.equals("bar")){
+                List<File> files = DirectoryHelper.getFilesFromDirectory(currentDir);
+                ArrayList<BarElement> results = new ArrayList<>();
+                ArrayList<String> list = new ArrayList<>();
+                for (File file : files) {
+                    list.add(FilenameUtils.getExtension(file.getName()));
+                }
+                Map<String, Long> counts = list.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+                for (Map.Entry<String, Long> entry : counts.entrySet()) {
+                    if(entry.getKey().equals("")){
+                        continue;
                     }
+                    results.add(new BarElement(entry.getKey(),"", new BigDecimal(entry.getValue())));
                 }
-                pb.step();
-                for (File dockerComposeFile : listDockerComposeFiles) {
-                    pb.step();
+                BarChart barChart = new BarChart();
+                barChart.setTitle("Filetypes ordered by occurrences");
+                barChart.setDescription("A simple bar chart");
+                barChart.setElements(results);
+
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("╭─ " + barChart.getTitle() + " ");
+                for (int i = 0; i < width - barChart.getTitle().length() - 1; i++) {
+                    stringBuilder.append("─");
                 }
-                pb.step();
+                stringBuilder.append("─╮");
+                stringBuilder.append("\n");
+                String str1 = "│    " + barChart.getDescription();
+                stringBuilder.append(str1);
+                for (int i = 0; i < width-str1.length() + 4; i++) {
+                    stringBuilder.append(" ");
+                }
+                stringBuilder.append("│\n");
+                for (int j = 0; j < results.size(); j++) {
+                    String str = "│ ";
+                    str += AsciiChart.getBarChartByLine(barChart, j);
+                    stringBuilder.append(str);
+                    for (int i = 0; i < width-str.length() + 4; i++) {
+                        stringBuilder.append(" ");
+                    }
+                    stringBuilder.append("│\n");
+                }
+
+                stringBuilder.append("╰──");
+                for (int i = 0; i < width; i++) {
+                    stringBuilder.append("─");
+                }
+                stringBuilder.append("─╯");
+                System.out.println(stringBuilder.toString());
             }
         }
-        if(!tree && !scan){
+        if(!tree && !chart){
             spec.commandLine().usage(System.err);
         }
         return ok ? 0 : 1;
