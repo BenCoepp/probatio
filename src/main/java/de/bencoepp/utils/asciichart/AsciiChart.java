@@ -28,6 +28,12 @@ public class AsciiChart {
         return chart.render();
     }
 
+    /** With this command you will be able to get a chart line by line.
+     * Use this for line by line output.
+     * @param chart
+     * @param line
+     * @return
+     */
     public static String getBarChartByLine(Chart chart, Integer line){
         String[] lines = chart.getLinesAsString();
         return lines[line];

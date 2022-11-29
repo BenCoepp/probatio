@@ -159,6 +159,30 @@ public class AnalyzeCommand implements Callable<Integer> {
                 stringBuilder.append("─╯");
                 System.out.println(stringBuilder.toString());
             }
+            if(chartType.equals("heatmap")){
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("╭─ Heatmap ");
+                for (int i = 0; i < width - 8; i++) {
+                    stringBuilder.append("─");
+                }
+                stringBuilder.append("─╮");
+                stringBuilder.append("\n");
+                for (int j = 0; j < 15; j++) {
+                    String str = "│ ";
+                    stringBuilder.append(str);
+                    for (int i = 0; i < width-str.length() + 4; i++) {
+                        stringBuilder.append(" ");
+                    }
+                    stringBuilder.append("│\n");
+                }
+
+                stringBuilder.append("╰──");
+                for (int i = 0; i < width; i++) {
+                    stringBuilder.append("─");
+                }
+                stringBuilder.append("─╯");
+                System.out.println(stringBuilder.toString());
+            }
         }
         if(!tree && !chart){
             spec.commandLine().usage(System.err);
