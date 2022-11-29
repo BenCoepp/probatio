@@ -1,14 +1,19 @@
 package de.bencoepp.command;
 
 import de.bencoepp.utils.CommandHelper;
+import de.bencoepp.utils.asciichart.AsciiChart;
+import de.bencoepp.utils.asciichart.chart.BarChart;
+import de.bencoepp.utils.asciichart.chart.entity.BarElement;
 import org.bouncycastle.eac.EACIOException;
 import picocli.CommandLine;
 
 import java.io.Console;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "monitor",
@@ -41,7 +46,16 @@ public class MonitorCommand implements Callable<Integer> {
         String currentDir = System.getProperty("user.dir");
 
         if(local && !remote){
-            print();
+            //print();
+            BarChart barChart = new BarChart();
+            barChart.setTitle("A simple chart");
+            barChart.setDescription("some more description");
+            ArrayList<BarElement> elem = new ArrayList<>();
+            elem.add(new BarElement("Cave","tes ttre", new BigDecimal("15")));
+            elem.add(new BarElement("test test","tes ttre", new BigDecimal("7")));
+            barChart.setElements(elem);
+            String out = AsciiChart.render(barChart);
+            System.out.println(out);
         }
         if(!local && !remote){
             spec.commandLine().usage(System.err);
