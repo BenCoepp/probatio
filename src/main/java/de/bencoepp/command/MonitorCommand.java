@@ -3,7 +3,6 @@ package de.bencoepp.command;
 import de.bencoepp.entity.App;
 import picocli.CommandLine;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.Callable;
 
@@ -30,7 +29,7 @@ public class MonitorCommand implements Callable<Integer> {
 
     private Integer width = 100;
     private Integer height = 480;
-    private App app;
+    private App app = new App();
     @Override
     public Integer call() throws Exception {
         boolean ok = true;

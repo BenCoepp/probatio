@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import de.bencoepp.entity.App;
 import de.bencoepp.entity.DeploymentStep;
 import de.bencoepp.entity.IntegrationStep;
 import de.bencoepp.entity.Project;
@@ -37,9 +38,12 @@ public class InitCommand implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
+    private App app = new App();
+
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
+        app.init();
         String currentDir = System.getProperty("user.dir");
         File optFile = new File("probatio.json");
         if(!check){
@@ -55,6 +59,10 @@ public class InitCommand implements Callable<Integer> {
                     System.out.println("");
                     System.out.println("Otherwiese go ahead and check file syntax by running the command below");
                     System.out.println("\nprobatio init --check");
+                    String json = Files.readString(Path.of("probatio.json")) ;
+                    Project project = new Project();
+                    project.fromJson(json);
+                    app.addProject(project);
                 }
             }else{
                 createProjectFile(currentDir);
@@ -86,7 +94,7 @@ public class InitCommand implements Callable<Integer> {
         return ok ? 0 : 1;
     }
 
-    private void createProjectFile(String currentDir) throws JsonProcessingException, FileNotFoundException {
+    private void createProjectFile(String currentDir) throws IOException {
         String projectTitle = currentDir.substring(currentDir.lastIndexOf("\\") + 1 ,currentDir.length());
         Project project = new Project();
         project.setTitle(projectTitle);
@@ -104,5 +112,6 @@ public class InitCommand implements Callable<Integer> {
         try (PrintWriter out = new PrintWriter("probatio.json")) {
             out.println("{\"project\":" + json + "}");
         }
+        app.addProject(project);
     }
 }

@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class App {
     private String hostname;
@@ -35,27 +36,46 @@ public class App {
             app.setCurrentDir(probatio_conf.getAbsolutePath());
             app.setHostname(InetAddress.getLocalHost().getHostName());
             app.setIp(InetAddress.getLocalHost().toString());
-
+            app.setProjects(new ArrayList<>());
             String json = ow.writeValueAsString(app);
             Files.createDirectories(Paths.get(homeDir + "\\probatio"));
             try (PrintWriter out = new PrintWriter(probatio_conf.getAbsolutePath())) {
                 out.println("{\"app\":" + json + "}");
             }
+            this.projects = app.getProjects();
+            this.ip = app.getIp();
+            this.status = app.getStatus();
+            this.appStatus = app.getAppStatus();
+            this.hostname = app.getHostname();
         }
     }
 
     private void fromJson(String json) throws JsonProcessingException {
         this.hostname = JsonPath.read(json, "$.app.hostname");
-        this.ip = JsonPath.read(json, "$.app.id");
+        this.ip = JsonPath.read(json, "$.app.ip");
         this.appStatus = JsonPath.read(json, "$.app.appStatus");
         this.status = JsonPath.read(json, "$.app.status");
         int countProjects = JsonPath.read(json, "$.app.projects.length()");
-        for (int i = 0; i < countProjects; i++) {
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonObject = mapper.writeValueAsString(JsonPath.read(json,"$.app.projects["+ i + "]"));
-            Project project = new Project();
-            project.fromJson(jsonObject);
-            this.projects.add(project);
+        if(countProjects != 0) {
+            for (int i = 0; i < countProjects; i++) {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.app.projects[" + i + "]"));
+                Project project = new Project();
+                project.fromJson(jsonObject);
+                this.projects.add(project);
+            }
+        }
+    }
+
+    public void update() throws IOException {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String homeDir = System.getProperty("user.home");
+        File probatio_conf = new File(homeDir + "\\probatio\\probatio_conf.json");
+        String json = ow.writeValueAsString(this);
+        Files.delete(Paths.get(homeDir + "\\probatio\\probatio_conf.json"));
+        Files.createDirectories(Paths.get(homeDir + "\\probatio"));
+        try (PrintWriter out = new PrintWriter(probatio_conf.getAbsolutePath())) {
+            out.println("{\"app\":" + json + "}");
         }
     }
 
@@ -63,47 +83,67 @@ public class App {
         return hostname;
     }
 
-    public void setHostname(String hostname) {
+    public void setHostname(String hostname) throws IOException {
         this.hostname = hostname;
+        update();
     }
 
     public String getIp() {
         return ip;
     }
 
-    public void setIp(String ip) {
+    public void setIp(String ip) throws IOException {
         this.ip = ip;
+        update();
     }
 
     public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Integer status) throws IOException {
         this.status = status;
+        update();
     }
 
     public Integer getAppStatus() {
         return appStatus;
     }
 
-    public void setAppStatus(Integer appStatus) {
+    public void setAppStatus(Integer appStatus) throws IOException {
         this.appStatus = appStatus;
+        update();
     }
 
     public ArrayList<Project> getProjects() {
         return projects;
     }
 
-    public void setProjects(ArrayList<Project> projects) {
+    public void setProjects(ArrayList<Project> projects) throws IOException {
         this.projects = projects;
+        update();
     }
 
     public String getCurrentDir() {
         return currentDir;
     }
 
-    public void setCurrentDir(String currentDir) {
+    public void setCurrentDir(String currentDir) throws IOException {
         this.currentDir = currentDir;
+        update();
+    }
+
+    public void addProject(Project project) throws IOException {
+        if(projects == null){
+            this.projects = new ArrayList<>();
+        }
+        for (ListIterator<Project> iter = projects.listIterator(); iter.hasNext(); ) {
+            Project element = iter.next();
+            if(element.getRoot() == project.getRoot()){
+                iter.remove();
+            }
+        }
+        this.projects.add(project);
+        update();
     }
 }

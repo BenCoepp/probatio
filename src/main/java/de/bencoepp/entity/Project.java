@@ -12,7 +12,7 @@ public class Project {
     private Boolean integration;
     private ArrayList<DeploymentStep> deploymentStepList = new ArrayList<>();
     private ArrayList<IntegrationStep> integrationStepList = new ArrayList<>();
-
+    private String root;
 
 
     public String getTitle() {
@@ -84,5 +84,13 @@ public class Project {
             deploymentStep.fromJson(jsonObject);
             this.deploymentStepList.add(deploymentStep);
         }
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
     }
 }
