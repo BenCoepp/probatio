@@ -24,6 +24,7 @@ public class App {
     private Integer user;
     private String email;
     private String password;
+    private ArrayList<String> runtimes;
 
     private String currentDir = System.getProperty("user.dir");
 
@@ -177,6 +178,29 @@ public class App {
             }
         }
         this.projects.add(project);
+        update();
+    }
+
+    public ArrayList<String> getRuntimes() {
+        return runtimes;
+    }
+
+    public void setRuntimes(ArrayList<String> runtimes) throws IOException {
+        this.runtimes = runtimes;
+        update();
+    }
+
+    public void addRuntime(String runtime) throws IOException {
+        if(runtimes == null){
+            this.runtimes = new ArrayList<>();
+        }
+        for (ListIterator<String> iter = runtimes.listIterator(); iter.hasNext(); ) {
+            String element = iter.next();
+            if(element.equals(runtime)){
+                iter.remove();
+            }
+        }
+        this.runtimes.add(runtime);
         update();
     }
 }
