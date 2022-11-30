@@ -1,5 +1,6 @@
 package de.bencoepp.command;
 
+import de.bencoepp.entity.App;
 import de.bencoepp.entity.CheckElement;
 import de.bencoepp.entity.Project;
 import de.bencoepp.utils.IntegrationHelper;
@@ -31,12 +32,19 @@ public class TestCommand implements Callable<Integer> {
             description = "test project as deep as possible")
     boolean deep;
 
+    @CommandLine.Option(names = {"-v", "--verbose"},
+            description = "show more output")
+    boolean verbose;
+
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
+
+    private App app = new App();
 
     @Override
     public Integer call() throws IOException {
         boolean ok = true;
+        app.init();
         String currentDir = System.getProperty("user.dir");
         Project project = new Project();
         File optFile = new File("probatio.json");
@@ -66,9 +74,16 @@ public class TestCommand implements Callable<Integer> {
         }
         if(shallow && !deep && ok){
             ArrayList<CheckElement> list = IntegrationHelper.executeIntegration(project);
+            System.out.println("Results Integration Test:");
+            for (CheckElement element : list) {
+                element.print(verbose);
+            }
         }
         if(deep && !shallow && ok){
             ArrayList<CheckElement> list = IntegrationHelper.executeIntegration(project);
+            for (CheckElement element : list) {
+                element.print(verbose);
+            }
         }
         if(!shallow && !deep){
             spec.commandLine().usage(System.err);

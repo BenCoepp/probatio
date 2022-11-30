@@ -44,6 +44,8 @@ public class CheckElement {
         }else{
             System.out.println("[!] " + this.title + " (" + this.description + ")");
         }
-        System.out.println(this.info);
+        if(verbose){
+            System.out.println(this.info);
+        }
     }
 }
