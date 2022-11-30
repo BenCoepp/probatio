@@ -6,9 +6,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+/** A Bar Chart can be configured in a few ways.
+ * Please make sure to keep in mind that you need to use the
+ * render method to render the chart.
+ *
+ */
 public class BarChart extends Chart{
     private ArrayList<BarElement> elements;
     private String bar = "█";
+
     @Override
     public String render() {
         if(elements.isEmpty()){
