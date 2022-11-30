@@ -4,6 +4,7 @@ import de.bencoepp.utils.CommandHelper;
 import de.bencoepp.utils.DirectoryHelper;
 import de.bencoepp.utils.asciichart.AsciiChart;
 import de.bencoepp.utils.asciichart.chart.BarChart;
+import de.bencoepp.utils.asciichart.chart.LineChart;
 import de.bencoepp.utils.asciichart.chart.entity.BarElement;
 import me.tongfei.progressbar.ProgressBar;
 import org.apache.commons.io.FilenameUtils;
@@ -182,6 +183,12 @@ public class AnalyzeCommand implements Callable<Integer> {
                 }
                 stringBuilder.append("─╯");
                 System.out.println(stringBuilder.toString());
+            }
+            if(chartType.equals("line")){
+                LineChart lineChart = new LineChart();
+                lineChart.setTitle("a title");
+                lineChart.setDescription("teetettet");
+                System.out.println(AsciiChart.render(lineChart));
             }
         }
         if(!tree && !chart){

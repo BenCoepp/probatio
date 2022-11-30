@@ -3,6 +3,7 @@ package de.bencoepp.command;
 import de.bencoepp.entity.App;
 import de.bencoepp.entity.CheckElement;
 import de.bencoepp.entity.Project;
+import de.bencoepp.utils.DeploymentHelper;
 import de.bencoepp.utils.IntegrationHelper;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
@@ -72,20 +73,26 @@ public class TestCommand implements Callable<Integer> {
             System.out.println("");
             System.out.println("Make sure to fill the created project file with your necessary information");
         }
-        if(shallow && !deep && ok){
-            ArrayList<CheckElement> list = IntegrationHelper.executeIntegration(project);
-            System.out.println("Results Integration Test:");
-            for (CheckElement element : list) {
-                element.print(verbose);
+        if(shallow&& ok){
+            ArrayList<CheckElement> listIntegrations = IntegrationHelper.executeIntegration(project);
+            if(!listIntegrations.isEmpty()){
+                System.out.println("\nResults Integration:");
+                for (CheckElement element : listIntegrations) {
+                    element.print(verbose);
+                }
+            }
+            ArrayList<CheckElement> listDeployments = DeploymentHelper.executeDeployment(project);
+            if(!listDeployments.isEmpty()){
+                System.out.println("Results Deployment:");
+                for (CheckElement element : listDeployments) {
+                    element.print(verbose);
+                }
+            }
+            if(deep){
+                
             }
         }
-        if(deep && !shallow && ok){
-            ArrayList<CheckElement> list = IntegrationHelper.executeIntegration(project);
-            for (CheckElement element : list) {
-                element.print(verbose);
-            }
-        }
-        if(!shallow && !deep){
+        if(!shallow){
             spec.commandLine().usage(System.err);
         }
         return ok ? 0 : 1;
