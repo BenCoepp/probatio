@@ -60,8 +60,8 @@ public class Driver {
 
     public void printFix(){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("To fix the issue with " + this.name);
-        stringBuilder.append("You need to follow the instructions below:");
+        stringBuilder.append("\nTo fix the issue with " + this.name);
+        stringBuilder.append("\nYou need to follow the instructions below:");
         stringBuilder.append(this.fixInstructions);
         System.out.println(stringBuilder.toString());
     }

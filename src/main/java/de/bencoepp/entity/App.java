@@ -88,6 +88,29 @@ public class App {
                 " rerun the command below to make sure everything is working in order." +
                 "\n probatio doctor");
         driverArrayList.add(docker);
+        Driver dockercompose = new Driver();
+        dockercompose.setName("Docker Compose");
+        dockercompose.setDescription("This driver links to Docker Compose, but only if Docker Compose is installed as its own application.");
+        dockercompose.setInstallInstructions("To install Docker Compose you can just install Docker. In most cases Docker comes with Docker Compose" +
+                " or it is a direct Docker plugin. Still make sure it is running by simply running the doctor again and it should at some point turn to true.");
+        ArrayList<String[]> dockercomposeInstallCommand = new ArrayList<>();
+        dockercomposeInstallCommand.add(new String[]{"apt-get","install","docker-compose-plugin"});
+        dockercompose.setInstallCommands(dockercomposeInstallCommand);
+        dockercompose.setFixInstructions("To fix Docker Compose there are only two real ways. " +
+                "\n- Installing Docker Compose" +
+                "\n- Using docker compose instead of docker-compose" +
+                "\n" +
+                "\nAfter that run the doctor again and test if the changes applied.");
+        driverArrayList.add(dockercompose);
+        Driver kubectl = new Driver();
+        kubectl.setName("Kubernetes kubectl\n");
+        kubectl.setDescription("This driver links to kubectl");
+        kubectl.setFixInstructions("\nIf kubectl is not available there are two possible reasons for this." +
+                "\n- kubectl is not installed" +
+                "\n- the installation is broken" +
+                "\n" +
+                "\nafter that please run the doctor again and see if the changes have applied.");
+        driverArrayList.add(kubectl);
         return driverArrayList;
     }
 
