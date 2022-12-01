@@ -24,7 +24,7 @@ public class App {
     private Integer user;
     private String email;
     private String password;
-    private ArrayList<String> runtimes;
+    private ArrayList<Driver> drivers;
 
     private String currentDir = System.getProperty("user.dir");
 
@@ -51,7 +51,44 @@ public class App {
             this.status = app.getStatus();
             this.appStatus = app.getAppStatus();
             this.hostname = app.getHostname();
+
         }
+        this.drivers = initDrivers();
+    }
+
+    private ArrayList<Driver> initDrivers() {
+        ArrayList<Driver> driverArrayList = new ArrayList<>();
+        Driver docker = new Driver();
+        docker.setName("Docker");
+        docker.setDescription("This driver handles and is linked to the docker engine");
+        docker.setInstallInstructions("To install docker follow the link below and search for" +
+                " the necessary install instructions for your operating system.\n" +
+                " https://docs.docker.com/get-docker/\n" +
+                " Once you have downloaded and followed the operating system specific install " +
+                " instructions you should run the command below to test if the install was successful." +
+                " \nThe provided install commands should only be used on a ubuntu system.");
+        ArrayList<String[]> dockerInstallCommand = new ArrayList<>();
+        dockerInstallCommand.add(new String[]{"apt-get","remove","docker","docker-engine","docker.io","containerd","runc"});
+        dockerInstallCommand.add(new String[]{"apt-get","update"});
+        dockerInstallCommand.add(new String[]{"apt-get","install","ca-certificates","curl","gnupg","lsb-release"});
+        dockerInstallCommand.add(new String[]{"mkdir","-p","/etc/apt/keyrings"});
+        dockerInstallCommand.add(new String[]{"curl","-fsSL","https://download.docker.com/linux/ubuntu/gpg","|","gpg","--dearmor","-o","/etc/apt/keyrings/docker.gpg"});
+        dockerInstallCommand.add(new String[]{"apt-get","update"});
+        dockerInstallCommand.add(new String[]{"apt-get","install","docker-ce","docker-ce-cli","containerd.io","docker-compose-plugin"});
+        docker.setInstallCommands(dockerInstallCommand);
+        docker.setFixInstructions("To fix docker there are a few methods available depending on why" +
+                " docker is currently not working. The following list may help you narrow the problem down." +
+                " \n" +
+                " \n- restart or start the docker engine" +
+                " \n- run sudo systemctl docker start" +
+                " \n- restart the maschine" +
+                " \n- check if you have docker installed" +
+                " \n" +
+                " \nIf you have tried everything, or the problem has resolved itself then please" +
+                " rerun the command below to make sure everything is working in order." +
+                "\n probatio doctor");
+        driverArrayList.add(docker);
+        return driverArrayList;
     }
 
     private void fromJson(String json) throws JsonProcessingException {
@@ -181,26 +218,26 @@ public class App {
         update();
     }
 
-    public ArrayList<String> getRuntimes() {
-        return runtimes;
-    }
-
-    public void setRuntimes(ArrayList<String> runtimes) throws IOException {
-        this.runtimes = runtimes;
-        update();
-    }
-
-    public void addRuntime(String runtime) throws IOException {
-        if(runtimes == null){
-            this.runtimes = new ArrayList<>();
+    public void addDriver(Driver driver) throws IOException {
+        if(drivers == null){
+            this.drivers = new ArrayList<>();
         }
-        for (ListIterator<String> iter = runtimes.listIterator(); iter.hasNext(); ) {
-            String element = iter.next();
-            if(element.equals(runtime)){
+        for (ListIterator<Driver> iter = drivers.listIterator(); iter.hasNext(); ) {
+            Driver element = iter.next();
+            if(element.getName().equals(driver.getName())){
                 iter.remove();
             }
         }
-        this.runtimes.add(runtime);
+        this.drivers.add(driver);
+        update();
+    }
+
+    public ArrayList<Driver> getDrivers() {
+        return drivers;
+    }
+
+    public void setDrivers(ArrayList<Driver> drivers) throws IOException {
+        this.drivers = drivers;
         update();
     }
 }

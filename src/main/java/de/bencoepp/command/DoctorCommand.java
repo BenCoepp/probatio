@@ -2,15 +2,18 @@ package de.bencoepp.command;
 
 import de.bencoepp.entity.App;
 import de.bencoepp.entity.CheckElement;
+import de.bencoepp.entity.Driver;
 import de.bencoepp.utils.CommandHelper;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
+import java.awt.dnd.DragGestureEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "doctor",
@@ -39,7 +42,6 @@ public class DoctorCommand implements Callable<Integer> {
     public Integer call() throws Exception {
         boolean ok = true;
         app.init();
-        app.setRuntimes(new ArrayList<>());
         ArrayList<CheckElement> list = new ArrayList<>();
         try (ProgressBar pb = new ProgressBar("Analyzing", 4)) {
             pb.setExtraMessage("Check Applications...");
@@ -66,8 +68,15 @@ public class DoctorCommand implements Callable<Integer> {
             printReport(issues);
         }
         if(fix && !verbose){
-            ArrayList<String> runtimes = app.getRuntimes();
-            System.out.println(runtimes.toString());
+            ArrayList<Driver> drivers = app.getDrivers();
+            for (CheckElement element : list) {
+                if(element.getCheck() == false){
+                    Optional<Driver> driverEl =  drivers.stream().filter(driver -> element.getTitle().equals(driver.getName())).findFirst();
+                    if(driverEl.isPresent()){
+                        driverEl.get().printFix();
+                    }
+                }
+            }
         }
         if(!verbose && !fix){
             System.out.println("Doctor summary (to see all details, run probatio doctor -v):");
@@ -95,7 +104,6 @@ public class DoctorCommand implements Callable<Integer> {
         String[] dockerVersion = {"docker", "--version"};
         if(CommandHelper.executeCommand(dockerVersion,new File(System.getProperty("user.dir")))){
             checkElement.setCheck(true);
-            app.addRuntime("docker");
             String output = CommandHelper.executeCommandWithOutput(dockerVersion);
             checkElement.setDescription(output);
             String[] dockerINfo = {"docker", "info"};
@@ -116,7 +124,6 @@ public class DoctorCommand implements Callable<Integer> {
         String[] dockerVersion = {"docker-compose", "--version"};
         if(CommandHelper.executeCommand(dockerVersion,new File(System.getProperty("user.dir")))){
             checkElement.setCheck(true);
-            app.addRuntime("docker-compose");
             String output = CommandHelper.executeCommandWithOutput(dockerVersion);
             checkElement.setDescription(output);
         }else{
@@ -134,7 +141,6 @@ public class DoctorCommand implements Callable<Integer> {
         String[] kubectlVersion = {"kubectl", "version"};
         if(CommandHelper.executeCommand(kubectlVersion,new File(System.getProperty("user.dir")))){
             checkElement.setCheck(true);
-            app.addRuntime("kubectl");
             String output = CommandHelper.executeCommandWithOutput(kubectlVersion);
             checkElement.setDescription(output);
             String[] kubectlInfo = {"kubectl", "version", "--output=json"};
