@@ -2,7 +2,6 @@ package de.bencoepp;
 
 
 import de.bencoepp.command.*;
-import de.bencoepp.entity.App;
 import picocli.CommandLine;
 
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class Probatio implements Runnable{
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    public Probatio() throws IOException {
+    public Probatio() {
     }
 
     public static void main(String... args) throws IOException {

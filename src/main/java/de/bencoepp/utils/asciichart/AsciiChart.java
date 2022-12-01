@@ -1,14 +1,11 @@
 package de.bencoepp.utils.asciichart;
 
 import de.bencoepp.utils.asciichart.chart.Chart;
-import de.bencoepp.utils.asciichart.chart.entity.BarElement;
-
-import java.util.ArrayList;
 
 /** AsciiChart is the all in one solution to building and displaying charts within
  * a console environment. It can be used in other places as well, for instance in
  * displaying as String Data.
- *
+ * <p>
  * To use Ascii Chart you need to do the following:
  * Chart chart = new Chart();
  * chart.addElements(..Data);

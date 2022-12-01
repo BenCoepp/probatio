@@ -4,7 +4,6 @@ package de.bencoepp.utils.asciichart.chart;
 import de.bencoepp.utils.asciichart.chart.entity.LineElement;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LineChart extends Chart{
     private ArrayList<LineElement> elements;

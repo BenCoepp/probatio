@@ -63,7 +63,7 @@ public class TestCommand implements Callable<Integer> {
                     pb.step();
                 }catch (Exception e){
                     ok = false;
-                    System.out.println(e);
+                    System.out.println(e.toString());
                     System.out.println("An error has accused while reading the project, please check the configuration file.");
                 }
             }

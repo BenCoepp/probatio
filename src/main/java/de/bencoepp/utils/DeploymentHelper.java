@@ -2,7 +2,6 @@ package de.bencoepp.utils;
 
 import de.bencoepp.entity.CheckElement;
 import de.bencoepp.entity.DeploymentStep;
-import de.bencoepp.entity.IntegrationStep;
 import de.bencoepp.entity.Project;
 import me.tongfei.progressbar.ProgressBar;
 

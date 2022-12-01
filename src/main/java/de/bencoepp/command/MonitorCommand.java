@@ -9,7 +9,6 @@ import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -35,7 +34,6 @@ public class MonitorCommand implements Callable<Integer> {
     CommandLine.Model.CommandSpec spec;
 
     private Integer width = 100;
-    private Integer height = 480;
     private App app = new App();
     private BarChart runtimePerformace;
 
@@ -102,65 +100,47 @@ public class MonitorCommand implements Callable<Integer> {
     private String getRuntimes() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\n╭─ Runtimes ");
-        for (int i = 0; i < width - 80; i++) {
-            stringBuilder.append("─");
-        }
+        stringBuilder.append("─".repeat(Math.max(0, width - 80)));
         stringBuilder.append("─╮");
         stringBuilder.append("╭─ Performance ");
-        for (int i = 0; i < width - 46; i++) {
-            stringBuilder.append("─");
-        }
+        stringBuilder.append("─".repeat(Math.max(0, width - 46)));
         stringBuilder.append("─╮");
         stringBuilder.append("\n");
         for (int j = 0; j < runtimes.size(); j++) {
             String str = "│ " + runtimes.get(j);
 
             stringBuilder.append(str);
-            for (int i = 0; i < width-str.length() - 67; i++) {
-                stringBuilder.append(" ");
-            }
+            stringBuilder.append(" ".repeat(Math.max(0, width - str.length() - 67)));
             stringBuilder.append("│");
             String str1 = "│" + AsciiChart.getBarChartByLine(runtimePerformace, j);
 
             stringBuilder.append(str1);
-            for (int i = 0; i < width-str1.length() - 30; i++) {
-                stringBuilder.append(" ");
-            }
+            stringBuilder.append(" ".repeat(Math.max(0, width - str1.length() - 30)));
             stringBuilder.append("│\n");
         }
         stringBuilder.append("╰──");
-        for (int i = 0; i < width -71; i++) {
-            stringBuilder.append("─");
-        }
+        stringBuilder.append("─".repeat(Math.max(0, width - 71)));
         stringBuilder.append("─╯");
         stringBuilder.append("╰──");
-        for (int i = 0; i < width -34; i++) {
-            stringBuilder.append("─");
-        }
+        stringBuilder.append("─".repeat(Math.max(0, width - 34)));
         stringBuilder.append("─╯");
 
         return stringBuilder.toString();
     }
 
-    private String getInfoHeader() throws UnknownHostException {
+    private String getInfoHeader() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("╭─ System ");
-        for (int i = 0; i < width - 7; i++) {
-            stringBuilder.append("─");
-        }
+        stringBuilder.append("─".repeat(Math.max(0, width - 7)));
         stringBuilder.append("─╮");
         stringBuilder.append("\n");
         String str = "│  Hostname: " + app.getHostname() + "   IP: " + app.getIp() + "  Status: OK";
 
         stringBuilder.append(str);
-        for (int i = 0; i < width-str.length() + 4; i++) {
-            stringBuilder.append(" ");
-        }
+        stringBuilder.append(" ".repeat(Math.max(0, width - str.length() + 4)));
         stringBuilder.append("│\n");
         stringBuilder.append("╰──");
-        for (int i = 0; i < width; i++) {
-            stringBuilder.append("─");
-        }
+        stringBuilder.append("─".repeat(Math.max(0, width)));
         stringBuilder.append("─╯");
 
         return stringBuilder.toString();

@@ -61,12 +61,11 @@ public class App {
         Driver docker = new Driver();
         docker.setName("Docker");
         docker.setDescription("This driver handles and is linked to the docker engine");
-        docker.setInstallInstructions("To install docker follow the link below and search for" +
-                " the necessary install instructions for your operating system.\n" +
-                " https://docs.docker.com/get-docker/\n" +
-                " Once you have downloaded and followed the operating system specific install " +
-                " instructions you should run the command below to test if the install was successful." +
-                " \nThe provided install commands should only be used on a ubuntu system.");
+        docker.setInstallInstructions("""
+                To install docker follow the link below and search for the necessary install instructions for your operating system.
+                 https://docs.docker.com/get-docker/
+                 Once you have downloaded and followed the operating system specific install  instructions you should run the command below to test if the install was successful.\s
+                The provided install commands should only be used on a ubuntu system.""");
         ArrayList<String[]> dockerInstallCommand = new ArrayList<>();
         dockerInstallCommand.add(new String[]{"apt-get","remove","docker","docker-engine","docker.io","containerd","runc"});
         dockerInstallCommand.add(new String[]{"apt-get","update"});
@@ -76,17 +75,16 @@ public class App {
         dockerInstallCommand.add(new String[]{"apt-get","update"});
         dockerInstallCommand.add(new String[]{"apt-get","install","docker-ce","docker-ce-cli","containerd.io","docker-compose-plugin"});
         docker.setInstallCommands(dockerInstallCommand);
-        docker.setFixInstructions("To fix docker there are a few methods available depending on why" +
-                " docker is currently not working. The following list may help you narrow the problem down." +
-                " \n" +
-                " \n- restart or start the docker engine" +
-                " \n- run sudo systemctl docker start" +
-                " \n- restart the maschine" +
-                " \n- check if you have docker installed" +
-                " \n" +
-                " \nIf you have tried everything, or the problem has resolved itself then please" +
-                " rerun the command below to make sure everything is working in order." +
-                "\n probatio doctor");
+        docker.setFixInstructions("""
+                To fix docker there are a few methods available depending on why docker is currently not working. The following list may help you narrow the problem down.\s
+                \s
+                - restart or start the docker engine\s
+                - run sudo systemctl docker start\s
+                - restart the maschine\s
+                - check if you have docker installed\s
+                \s
+                If you have tried everything, or the problem has resolved itself then please rerun the command below to make sure everything is working in order.
+                 probatio doctor""");
         driverArrayList.add(docker);
         Driver dockercompose = new Driver();
         dockercompose.setName("Docker Compose");
@@ -96,20 +94,23 @@ public class App {
         ArrayList<String[]> dockercomposeInstallCommand = new ArrayList<>();
         dockercomposeInstallCommand.add(new String[]{"apt-get","install","docker-compose-plugin"});
         dockercompose.setInstallCommands(dockercomposeInstallCommand);
-        dockercompose.setFixInstructions("To fix Docker Compose there are only two real ways. " +
-                "\n- Installing Docker Compose" +
-                "\n- Using docker compose instead of docker-compose" +
-                "\n" +
-                "\nAfter that run the doctor again and test if the changes applied.");
+        dockercompose.setFixInstructions("""
+                To fix Docker Compose there are only two real ways.\s
+                - Installing Docker Compose
+                - Using docker compose instead of docker-compose
+
+                After that run the doctor again and test if the changes applied.""");
         driverArrayList.add(dockercompose);
         Driver kubectl = new Driver();
         kubectl.setName("Kubernetes kubectl\n");
         kubectl.setDescription("This driver links to kubectl");
-        kubectl.setFixInstructions("\nIf kubectl is not available there are two possible reasons for this." +
-                "\n- kubectl is not installed" +
-                "\n- the installation is broken" +
-                "\n" +
-                "\nafter that please run the doctor again and see if the changes have applied.");
+        kubectl.setFixInstructions("""
+
+                If kubectl is not available there are two possible reasons for this.
+                - kubectl is not installed
+                - the installation is broken
+
+                after that please run the doctor again and see if the changes have applied.""");
         driverArrayList.add(kubectl);
         return driverArrayList;
     }
@@ -231,12 +232,7 @@ public class App {
         if(projects == null){
             this.projects = new ArrayList<>();
         }
-        for (ListIterator<Project> iter = projects.listIterator(); iter.hasNext(); ) {
-            Project element = iter.next();
-            if(element.getRoot() == project.getRoot()){
-                iter.remove();
-            }
-        }
+        projects.removeIf(element -> element.getRoot() == project.getRoot());
         this.projects.add(project);
         update();
     }
@@ -245,12 +241,7 @@ public class App {
         if(drivers == null){
             this.drivers = new ArrayList<>();
         }
-        for (ListIterator<Driver> iter = drivers.listIterator(); iter.hasNext(); ) {
-            Driver element = iter.next();
-            if(element.getName().equals(driver.getName())){
-                iter.remove();
-            }
-        }
+        drivers.removeIf(element -> element.getName().equals(driver.getName()));
         this.drivers.add(driver);
         update();
     }

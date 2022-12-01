@@ -25,20 +25,16 @@ public class BarChart extends Chart{
         int increment = maxValue / 25;
         int longestLabelLength = getLargestLabelLeangth();
         for (BarElement element : elements) {
-            for (int i = 0; i < longestLabelLength-element.getTitle().length(); i++) {
-                stringBuilder.append(" ");
-            }
-            stringBuilder.append(element.getTitle() + " ▏");
+            stringBuilder.append(" ".repeat(Math.max(0, longestLabelLength - element.getTitle().length())));
+            stringBuilder.append(element.getTitle()).append(" ▏");
             String str = "";
             if(element.getValue().toString().length() < String.valueOf(maxValue).length()){
                 for (int i = 0; i < String.valueOf(maxValue).length()-element.getValue().toString().length(); i++) {
                     str += " ";
                 }
             }
-            stringBuilder.append("  " + str + element.getValue() + "  ");
-            for (int i = 0; i < element.getValue().intValue(); i++) {
-                stringBuilder.append(bar);
-            }
+            stringBuilder.append("  ").append(str).append(element.getValue()).append("  ");
+            stringBuilder.append(String.valueOf(bar).repeat(Math.max(0, element.getValue().intValue())));
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

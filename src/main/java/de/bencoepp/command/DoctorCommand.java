@@ -7,12 +7,9 @@ import de.bencoepp.utils.CommandHelper;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
-import java.awt.dnd.DragGestureEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
@@ -70,7 +67,7 @@ public class DoctorCommand implements Callable<Integer> {
         if(fix && !verbose){
             ArrayList<Driver> drivers = app.getDrivers();
             for (CheckElement element : list) {
-                if(element.getCheck() == false){
+                if(!element.getCheck()){
                     Optional<Driver> driverEl =  drivers.stream().filter(driver -> element.getTitle().equals(driver.getName())).findFirst();
                     if(driverEl.isPresent()){
                         driverEl.get().printFix();

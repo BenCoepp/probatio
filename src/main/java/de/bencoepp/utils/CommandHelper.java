@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.concurrent.ExecutionException;
 
 public class CommandHelper {
 
-    public static boolean executeCommand(String[] commands, File dir) throws IOException, IOException {
+    public static boolean executeCommand(String[] commands, File dir) throws IOException {
         boolean ok = true;
         try {
             Runtime rt = Runtime.getRuntime();
@@ -34,7 +33,7 @@ public class CommandHelper {
         return ok;
     }
 
-    public static String executeCommandWithOutput(String[] commands) throws IOException, IOException {
+    public static String executeCommandWithOutput(String[] commands) throws IOException {
         String output = "";
         try {
             Runtime rt = Runtime.getRuntime();

@@ -1,6 +1,5 @@
 package de.bencoepp.command;
 
-import de.bencoepp.utils.CommandHelper;
 import de.bencoepp.utils.DirectoryHelper;
 import de.bencoepp.utils.asciichart.AsciiChart;
 import de.bencoepp.utils.asciichart.chart.BarChart;
@@ -15,13 +14,11 @@ import org.barfuin.texttree.api.style.TreeStyle;
 import picocli.CommandLine;
 import java.io.File;
 import java.math.BigDecimal;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.logging.FileHandler;
 import java.util.stream.Collectors;
 
 @CommandLine.Command(name = "analyze",
@@ -131,56 +128,42 @@ public class AnalyzeCommand implements Callable<Integer> {
                 barChart.setElements(results);
 
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append("╭─ " + barChart.getTitle() + " ");
-                for (int i = 0; i < width - barChart.getTitle().length() - 1; i++) {
-                    stringBuilder.append("─");
-                }
+                stringBuilder.append("╭─ ").append(barChart.getTitle()).append(" ");
+                stringBuilder.append("─".repeat(Math.max(0, width - barChart.getTitle().length() - 1)));
                 stringBuilder.append("─╮");
                 stringBuilder.append("\n");
                 String str1 = "│    " + barChart.getDescription();
                 stringBuilder.append(str1);
-                for (int i = 0; i < width-str1.length() + 4; i++) {
-                    stringBuilder.append(" ");
-                }
+                stringBuilder.append(" ".repeat(Math.max(0, width - str1.length() + 4)));
                 stringBuilder.append("│\n");
                 for (int j = 0; j < results.size(); j++) {
                     String str = "│ ";
                     str += AsciiChart.getBarChartByLine(barChart, j);
                     stringBuilder.append(str);
-                    for (int i = 0; i < width-str.length() + 4; i++) {
-                        stringBuilder.append(" ");
-                    }
+                    stringBuilder.append(" ".repeat(Math.max(0, width - str.length() + 4)));
                     stringBuilder.append("│\n");
                 }
 
                 stringBuilder.append("╰──");
-                for (int i = 0; i < width; i++) {
-                    stringBuilder.append("─");
-                }
+                stringBuilder.append("─".repeat(Math.max(0, width)));
                 stringBuilder.append("─╯");
                 System.out.println(stringBuilder.toString());
             }
             if(chartType.equals("heatmap")){
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("╭─ Heatmap ");
-                for (int i = 0; i < width - 8; i++) {
-                    stringBuilder.append("─");
-                }
+                stringBuilder.append("─".repeat(Math.max(0, width - 8)));
                 stringBuilder.append("─╮");
                 stringBuilder.append("\n");
                 for (int j = 0; j < 15; j++) {
                     String str = "│ ";
                     stringBuilder.append(str);
-                    for (int i = 0; i < width-str.length() + 4; i++) {
-                        stringBuilder.append(" ");
-                    }
+                    stringBuilder.append(" ".repeat(Math.max(0, width - str.length() + 4)));
                     stringBuilder.append("│\n");
                 }
 
                 stringBuilder.append("╰──");
-                for (int i = 0; i < width; i++) {
-                    stringBuilder.append("─");
-                }
+                stringBuilder.append("─".repeat(Math.max(0, width)));
                 stringBuilder.append("─╯");
                 System.out.println(stringBuilder.toString());
             }

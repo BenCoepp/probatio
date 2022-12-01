@@ -1,7 +1,5 @@
 package de.bencoepp.utils.asciichart.chart;
 
-import java.util.ArrayList;
-
 public class Chart {
     private String title;
     private String description;
