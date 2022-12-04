@@ -14,7 +14,6 @@ import java.io.IOException;
                 AnalyzeCommand.class,
                 DoctorCommand.class,
                 InitCommand.class,
-                AuthCommand.class,
                 TestCommand.class,
                 MonitorCommand.class,
                 CommandLine.HelpCommand.class

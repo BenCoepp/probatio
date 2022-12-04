@@ -59,6 +59,11 @@
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-amplify</artifactId>
+            <version>1.12.353</version>
+        </dependency>
     </dependencies>
 
     <build>
