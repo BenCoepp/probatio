@@ -79,7 +79,7 @@ public class RemoteCommand implements Callable<Integer> {
         }
         if(test && !list && !newRemote){
             ArrayList<CheckElement> checkElements = new ArrayList<>();
-            try (ProgressBar pb = new ProgressBar("Testing", 4 + remotes.size())) {
+            try (ProgressBar pb = new ProgressBar("Remote", 4 + remotes.size())) {
                 pb.setExtraMessage("Test connection...");
                 for (Remote remote : remotes) {
                     pb.step();
