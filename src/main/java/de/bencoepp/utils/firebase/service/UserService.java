@@ -87,7 +87,7 @@ public class UserService {
             }
             reader.close();
         }
-        System.out.println(responseContent.toString());
+        //System.out.println(responseContent.toString());
         User user = new User();
         user.fromJson("{\"user\":" + responseContent + "}");
         return user;

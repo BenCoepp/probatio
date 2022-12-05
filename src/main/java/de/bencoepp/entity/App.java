@@ -21,11 +21,12 @@ public class App {
     private String ip;
     private Integer status;
     private Integer appStatus;
-    private ArrayList<Project> projects;
+    private ArrayList<Project> projects = new ArrayList<>();
     private Integer user;
     private String email;
     private String password;
     private ArrayList<Driver> drivers;
+    private ArrayList<Remote> remotes = new ArrayList<>();
 
     private String currentDir = System.getProperty("user.dir");
 
@@ -132,6 +133,16 @@ public class App {
                 project.fromJson("{\"project\":" + jsonObject + "}");
                 this.projects = new ArrayList<>();
                 this.projects.add(project);
+            }
+        }
+        int countRemotes = JsonPath.read(json, "$.app.remotes.length()");
+        if(countRemotes != 0){
+            for (int i = 0; i < countRemotes; i++) {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.app.remotes[" + i + "]"));
+                Remote remote = new Remote();
+                remote.fromJson("{\"remote\":" + jsonObject + "}");
+                this.remotes.add(remote);
             }
         }
     }
@@ -255,6 +266,23 @@ public class App {
 
     public void setDrivers(ArrayList<Driver> drivers) throws IOException {
         this.drivers = drivers;
+        update();
+    }
+
+    public ArrayList<Remote> getRemotes() {
+        return remotes;
+    }
+
+    public void setRemotes(ArrayList<Remote> remotes) {
+        this.remotes = remotes;
+    }
+
+    public void addRemote(Remote remote) throws IOException {
+        if(remotes == null){
+            this.remotes = new ArrayList<>();
+        }
+        remotes.removeIf(element -> element.getName().equals(remote.getName()));
+        this.remotes.add(remote);
         update();
     }
 }
