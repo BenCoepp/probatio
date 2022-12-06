@@ -15,7 +15,7 @@ public class DoctorTask extends SchedulerTask{
         list.add(checkDocker());
         list.add(checkDockerCompose());
         list.add(checkKubectl());
-        System.out.println("list le" + list.size());
+        
     }
 
     private CheckElement checkDocker() throws IOException {

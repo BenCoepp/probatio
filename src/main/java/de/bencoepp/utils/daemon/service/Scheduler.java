@@ -11,7 +11,6 @@ public class Scheduler {
     @Scheduled(fixedRate = 10000)
     public void executeScheduler(){
         String[] list = new String[]{
-                "de.bencoepp.utils.daemon.service.tasks.Status",
                 "de.bencoepp.utils.daemon.service.tasks.DoctorTask"
         };
         for (String scheduler : list) {
