@@ -74,6 +74,8 @@ public class RemoteCommand implements Callable<Integer> {
             remote.setPort(Integer.valueOf(reader.readLine()));
             if(remote.testConnection()){
                 app.addRemote(remote);
+                remote.install();
+                remote.setupDaemon();
             }
         }
         if(test && !list && !newRemote){

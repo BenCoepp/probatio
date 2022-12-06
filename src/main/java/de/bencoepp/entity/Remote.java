@@ -5,10 +5,15 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import de.bencoepp.utils.SSHHelper;
+import de.bencoepp.utils.firebase.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
-import java.io.ByteArrayOutputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
 
 public class Remote {
     private String name;
@@ -101,37 +106,37 @@ public class Remote {
     }
 
     public boolean testConnection() throws JSchException, InterruptedException {
-        Session session = null;
-        ChannelExec channel = null;
+        return SSHHelper.testConnection(this);
+    }
 
-        try {
-            session = new JSch().getSession(user, ip, port);
-            session.setPassword(password);
-            session.setConfig("StrictHostKeyChecking", "no");
-            session.connect();
+    public void install() throws IOException, JSchException, InterruptedException {
+        URL url = new URL("https://raw.githubusercontent.com/BenCoepp/probatio/main/installDaemon.sh");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setDoOutput(true);
 
-            channel = (ChannelExec) session.openChannel("exec");
-            channel.setCommand("ls");
-            ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
-            channel.setOutputStream(responseStream);
-            channel.connect();
-
-            while (channel.isConnected()) {
-                Thread.sleep(100);
+        int responseCode = con.getResponseCode();
+        StringBuilder responseContent = new StringBuilder();
+        BufferedReader reader;
+        String line;
+        if (responseCode >= 300) {
+            reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            while ((line = reader.readLine()) != null) {
+                responseContent.append(line);
             }
-
-            String responseString = new String(responseStream.toByteArray());
-            if(responseString.isBlank()){
-                return false;
-            }
-        } finally {
-            if (session != null) {
-                session.disconnect();
-            }
-            if (channel != null) {
-                channel.disconnect();
-            }
+            reader.close();
         }
-        return true;
+        else {
+            reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                responseContent.append(line);
+            }
+            reader.close();
+        }
+        String[] str = responseContent.toString().split("\n");
+        String output = SSHHelper.executeCommands(this,str);
+    }
+
+    public void setupDaemon() {
     }
 }
