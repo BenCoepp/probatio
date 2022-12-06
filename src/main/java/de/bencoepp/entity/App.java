@@ -273,8 +273,9 @@ public class App {
         return remotes;
     }
 
-    public void setRemotes(ArrayList<Remote> remotes) {
+    public void setRemotes(ArrayList<Remote> remotes) throws IOException {
         this.remotes = remotes;
+        update();
     }
 
     public void addRemote(Remote remote) throws IOException {

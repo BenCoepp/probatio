@@ -32,6 +32,13 @@ public class RemoteCommand implements Callable<Integer> {
     @CommandLine.Option(names = {"-t", "--test"},
             description = "test all connections to remotes")
     boolean test;
+
+    @CommandLine.Option(names = {"-r", "--remove"},
+            description = "remove specific remote")
+    boolean remove;
+
+    @CommandLine.Parameters(paramLabel = "Remote", description = "one or more remotes", arity = "0..1")
+    ArrayList<String> listRemotes;
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
@@ -95,12 +102,18 @@ public class RemoteCommand implements Callable<Integer> {
                     checkElements.add(checkElement);
                 }
             }
-
             for (CheckElement checkEl : checkElements) {
                 checkEl.print(false);
             }
         }
-        if(!list && !newRemote && !test){
+        if(remove && !list && !newRemote && !test && !(listRemotes == null)){
+            for (String remote : listRemotes) {
+                remotes.removeIf(element -> element.getName().equals(remote));
+            }
+            app.setRemotes(remotes);
+            System.out.println("Removed remotes from remote list");
+        }
+        if(!list && !newRemote && !test && !remove){
             spec.commandLine().usage(System.err);
         }
         return ok ? 0 : 1;
