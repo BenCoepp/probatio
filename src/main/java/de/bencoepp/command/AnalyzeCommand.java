@@ -1,10 +1,12 @@
 package de.bencoepp.command;
 
+import de.bencoepp.entity.CheckElement;
 import de.bencoepp.utils.DirectoryHelper;
 import de.bencoepp.utils.asciichart.AsciiChart;
 import de.bencoepp.utils.asciichart.chart.BarChart;
 import de.bencoepp.utils.asciichart.chart.LineChart;
 import de.bencoepp.utils.asciichart.chart.entity.BarElement;
+import de.bencoepp.utils.validator.docker.DockerValidator;
 import me.tongfei.progressbar.ProgressBar;
 import org.apache.commons.io.FilenameUtils;
 import org.barfuin.texttree.api.DefaultNode;
@@ -41,6 +43,10 @@ public class AnalyzeCommand implements Callable<Integer> {
 
     @CommandLine.Parameters(description = "chart you want to run analysis on", arity = "0..1")
     private String chartType;
+
+    @CommandLine.Option(names = {"-s", "--scan"},
+            description = "scan docker and docker-compose files")
+    boolean scan;
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
@@ -174,7 +180,39 @@ public class AnalyzeCommand implements Callable<Integer> {
                 System.out.println(AsciiChart.render(lineChart));
             }
         }
-        if(!tree && !chart){
+        if(scan && !tree && !chart){
+            List<File> listFiles = new ArrayList<>();
+            List<File> listDockerfiles = new ArrayList<>();
+            List<File> listDockerComposeFiles = new ArrayList<>();
+            try (ProgressBar pb = new ProgressBar("Analyzing", 2)) {
+                pb.setExtraMessage("Get Path...");
+                pb.step();
+                pb.setExtraMessage("Gathering files...");
+                listFiles = DirectoryHelper.getFilesFromDirectory(currentDir);
+                pb.step();
+                pb.setExtraMessage("Separating Files...");
+                for (File file : listFiles) {
+                    if(file.getName().equals("Dockerfile")){
+                        listDockerfiles.add(file);
+                    }
+                    if(file.getName().equals("docker-compose.yaml")){
+                        listDockerComposeFiles.add(file);
+                    }
+                    if(file.getName().equals("docker-compose.yml")){
+                        listDockerComposeFiles.add(file);
+                    }
+                }
+                pb.setExtraMessage("Finished...");
+            }
+            for (File dockerCompose : listDockerComposeFiles) {
+                ArrayList<CheckElement> checkElements = DockerValidator.validateDockerComposeFile(dockerCompose);
+                System.out.println(dockerCompose.getName());
+                for (CheckElement checkElement : checkElements) {
+                    checkElement.print(true);
+                }
+            }
+        }
+        if(!tree && !chart && !scan){
             spec.commandLine().usage(System.err);
         }
         return ok ? 0 : 1;

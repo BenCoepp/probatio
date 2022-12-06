@@ -21,14 +21,16 @@ public class DockerValidator {
             pb.step();
             CheckElement syntaxCheck = new CheckElement();
             syntaxCheck.setTitle("Syntax");
-            syntaxCheck.setDescription("");
+            syntaxCheck.setDescription("The syntax check for the compiled docker compose file");
             try {
                 DockerCompose dockerCompose = mapper.readValue(dockercomposeFile, DockerCompose.class);
-
+                syntaxCheck.setCheck(true);
             }catch (Exception e){
-                System.out.println(e);
+                syntaxCheck.setCheck(false);
+                syntaxCheck.setInfo(e.toString());
             }
             pb.step();
+            list.add(syntaxCheck);
         }
         return list;
     }
