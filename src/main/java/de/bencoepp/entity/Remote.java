@@ -110,31 +110,13 @@ public class Remote {
     }
 
     public void install() throws IOException, JSchException, InterruptedException {
-        URL url = new URL("https://raw.githubusercontent.com/BenCoepp/probatio/main/installDaemon.sh");
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        con.setDoOutput(true);
-
-        int responseCode = con.getResponseCode();
-        StringBuilder responseContent = new StringBuilder();
-        BufferedReader reader;
-        String line;
-        if (responseCode >= 300) {
-            reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-            while ((line = reader.readLine()) != null) {
-                responseContent.append(line);
-            }
-            reader.close();
-        }
-        else {
-            reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            while ((line = reader.readLine()) != null) {
-                responseContent.append(line);
-            }
-            reader.close();
-        }
-        String[] str = responseContent.toString().split("\n");
+        String[] str = new String[]{
+                "sudo curl https://raw.githubusercontent.com/BenCoepp/probatio/main/installDaemon.sh >> installDaemon.sh",
+                "sudo chmod +x installDaemon.sh",
+                "sudo ./installDaemon.sh"
+        };
         String output = SSHHelper.executeCommands(this,str);
+        System.out.println(output);
     }
 
     public void setupDaemon() {
