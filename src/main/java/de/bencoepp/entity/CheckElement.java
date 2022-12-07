@@ -1,5 +1,7 @@
 package de.bencoepp.entity;
 
+import com.jayway.jsonpath.JsonPath;
+
 public class CheckElement {
     private Boolean check;
     private String title;
@@ -47,5 +49,12 @@ public class CheckElement {
         if(verbose){
             System.out.println(this.info);
         }
+    }
+
+    public void fromJson(String json){
+        this.title = JsonPath.read(json, "$.doctor.title");
+        this.description = JsonPath.read(json, "$.doctor.description");
+        this.check = JsonPath.read(json, "$.doctor.check");
+        this.info = JsonPath.read(json, "$.doctor.info");
     }
 }

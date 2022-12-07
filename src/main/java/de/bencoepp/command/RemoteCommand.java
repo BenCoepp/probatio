@@ -3,6 +3,7 @@ package de.bencoepp.command;
 import de.bencoepp.entity.App;
 import de.bencoepp.entity.CheckElement;
 import de.bencoepp.entity.Remote;
+import de.bencoepp.utils.validator.StringValidator;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 import java.io.BufferedReader;
@@ -79,10 +80,14 @@ public class RemoteCommand implements Callable<Integer> {
             remote.setPassword(reader.readLine());
             System.out.println("Port:");
             remote.setPort(Integer.valueOf(reader.readLine()));
-            if(remote.testConnection()){
-                app.addRemote(remote);
-                remote.install();
-                remote.setupDaemon();
+            if(StringValidator.validateTitle(remote.getName())){
+                if(remote.testConnection()){
+                    app.addRemote(remote);
+                    remote.install();
+                    remote.setupDaemon();
+                }
+            }else{
+                System.out.println("Please try again some information does not meet the requirements");
             }
         }
         if(test && !list && !newRemote){

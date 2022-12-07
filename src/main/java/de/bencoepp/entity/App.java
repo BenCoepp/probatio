@@ -131,7 +131,6 @@ public class App {
                 String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.app.projects[" + i + "]"));
                 Project project = new Project();
                 project.fromJson("{\"project\":" + jsonObject + "}");
-                this.projects = new ArrayList<>();
                 this.projects.add(project);
             }
         }

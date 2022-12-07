@@ -6,8 +6,14 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+/**
+ * The type Scheduler.
+ */
 @Component
 public class Scheduler {
+    /**
+     * Execute scheduler.
+     */
     @Scheduled(fixedRate = 10000)
     public void executeScheduler(){
         String[] list = new String[]{
