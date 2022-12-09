@@ -66,8 +66,7 @@ public class SSHHelper {
                 Thread.sleep(100);
             }
 
-            String responseString = new String(responseStream.toByteArray());
-            return responseString;
+            return new String(responseStream.toByteArray());
         } finally {
             if (session != null) {
                 session.disconnect();

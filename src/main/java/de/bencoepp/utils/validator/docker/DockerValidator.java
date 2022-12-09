@@ -5,7 +5,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.bencoepp.entity.CheckElement;
 import de.bencoepp.utils.validator.docker.entity.DockerCompose;
 import me.tongfei.progressbar.ProgressBar;
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class BarChart extends Chart{
     private ArrayList<BarElement> elements;
-    private String bar = "█";
 
     @Override
     public String render() {
@@ -34,7 +33,8 @@ public class BarChart extends Chart{
                 }
             }
             stringBuilder.append("  ").append(str).append(element.getValue()).append("  ");
-            stringBuilder.append(String.valueOf(bar).repeat(Math.max(0, element.getValue().intValue())));
+            String bar = "█";
+            stringBuilder.append(bar.repeat(Math.max(0, element.getValue().intValue())));
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

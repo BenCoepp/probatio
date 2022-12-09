@@ -34,7 +34,7 @@ public class DoctorCommand implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    private App app = new App();
+    private final App app = new App();
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
@@ -69,9 +69,7 @@ public class DoctorCommand implements Callable<Integer> {
             for (CheckElement element : list) {
                 if(!element.getCheck()){
                     Optional<Driver> driverEl =  drivers.stream().filter(driver -> element.getTitle().equals(driver.getName())).findFirst();
-                    if(driverEl.isPresent()){
-                        driverEl.get().printFix();
-                    }
+                    driverEl.ifPresent(Driver::printFix);
                 }
             }
         }

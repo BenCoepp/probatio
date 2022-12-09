@@ -9,8 +9,8 @@ public class Firebase {
 
     private User user;
 
-    private String apiKey;
-    private UserService userService;
+    private final String apiKey;
+    private final UserService userService;
 
     public Firebase(String apiKey) {
         this.apiKey = apiKey;

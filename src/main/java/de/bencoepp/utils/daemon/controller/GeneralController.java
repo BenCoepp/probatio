@@ -1,6 +1,5 @@
 package de.bencoepp.utils.daemon.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.jayway.jsonpath.JsonPath;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
  */
 @Controller
 public class GeneralController {
-    private App app = new App();
+    private final App app = new App();
 
     /**
      * Gets main.

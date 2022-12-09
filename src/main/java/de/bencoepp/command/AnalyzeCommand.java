@@ -50,8 +50,6 @@ public class AnalyzeCommand implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    private int width = 100;
-
     @Override
     public Integer call() throws Exception {
         boolean ok = true;
@@ -114,6 +112,7 @@ public class AnalyzeCommand implements Callable<Integer> {
                 System.out.println("Please execute the following command with your desired type of chart and filter");
                 System.out.println("    probatio --chart <chartType> <filter>");
             }
+            int width = 100;
             if(chartType.equals("bar")){
                 List<File> files = DirectoryHelper.getFilesFromDirectory(currentDir);
                 ArrayList<BarElement> results = new ArrayList<>();
@@ -153,7 +152,7 @@ public class AnalyzeCommand implements Callable<Integer> {
                 stringBuilder.append("╰──");
                 stringBuilder.append("─".repeat(Math.max(0, width)));
                 stringBuilder.append("─╯");
-                System.out.println(stringBuilder.toString());
+                System.out.println(stringBuilder);
             }
             if(chartType.equals("heatmap")){
                 StringBuilder stringBuilder = new StringBuilder();
@@ -171,7 +170,7 @@ public class AnalyzeCommand implements Callable<Integer> {
                 stringBuilder.append("╰──");
                 stringBuilder.append("─".repeat(Math.max(0, width)));
                 stringBuilder.append("─╯");
-                System.out.println(stringBuilder.toString());
+                System.out.println(stringBuilder);
             }
             if(chartType.equals("line")){
                 LineChart lineChart = new LineChart();

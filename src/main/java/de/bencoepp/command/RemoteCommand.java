@@ -43,7 +43,7 @@ public class RemoteCommand implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    private App app = new App();
+    private final App app = new App();
 
     @Override
     public Integer call() throws Exception {

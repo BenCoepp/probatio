@@ -63,7 +63,7 @@ public class Driver {
         stringBuilder.append("\nTo fix the issue with ").append(this.name);
         stringBuilder.append("\nYou need to follow the instructions below:");
         stringBuilder.append(this.fixInstructions);
-        System.out.println(stringBuilder.toString());
+        System.out.println(stringBuilder);
     }
 }
 

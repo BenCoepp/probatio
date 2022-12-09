@@ -28,7 +28,7 @@ public class CommandHelper {
 
         }catch (Exception e){
             ok = false;
-            System.out.println(e);
+            System.out.println(e.toString());
         }
         return ok;
     }

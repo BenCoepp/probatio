@@ -33,11 +33,11 @@ public class MonitorCommand implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    private Integer width = 100;
-    private App app = new App();
+    private final Integer width = 100;
+    private final App app = new App();
     private BarChart runtimePerformace;
 
-    private ArrayList<String> runtimes = new ArrayList<>();
+    private final ArrayList<String> runtimes = new ArrayList<>();
     @Override
     public Integer call() throws Exception {
         boolean ok = true;

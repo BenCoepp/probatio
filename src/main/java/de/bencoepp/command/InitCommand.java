@@ -36,7 +36,7 @@ public class InitCommand implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    private App app = new App();
+    private final App app = new App();
 
     @Override
     public Integer call() throws Exception {
@@ -81,7 +81,7 @@ public class InitCommand implements Callable<Integer> {
                     System.out.println("Project read successfully you can continue with your work.");
                     pb.step();
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.out.println(e.toString());
                     System.out.println("An error has accused while reading the project, please check the configuration file.");
                 }
             }

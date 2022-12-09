@@ -31,10 +31,10 @@ public class Scheduler {
                             method = instance.getClass().getMethod("execute");
                             method.invoke(instance);
                         } catch (Exception e) {
-                            System.out.println(e);
+                            System.out.println(e.toString());
                         }
                     }catch (Exception e){
-                        System.out.println(e);
+                        System.out.println(e.toString());
                     }
 
                 }});

@@ -40,7 +40,7 @@ public class TestCommand implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    private App app = new App();
+    private final App app = new App();
 
     @Override
     public Integer call() throws IOException {
@@ -63,7 +63,7 @@ public class TestCommand implements Callable<Integer> {
                     pb.step();
                 }catch (Exception e){
                     ok = false;
-                    System.out.println(e.toString());
+                    System.out.println(e);
                     System.out.println("An error has accused while reading the project, please check the configuration file.");
                 }
             }

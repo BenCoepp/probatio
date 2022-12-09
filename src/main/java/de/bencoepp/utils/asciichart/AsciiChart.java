@@ -18,7 +18,6 @@ public class AsciiChart {
      * needs to have some elements as its data. If not you will receive a empty
      * string.
      *
-     * @param chart
      * @return rendered Chart
      */
     public static String render(Chart chart){
@@ -27,9 +26,6 @@ public class AsciiChart {
 
     /** With this command you will be able to get a chart line by line.
      * Use this for line by line output.
-     * @param chart
-     * @param line
-     * @return
      */
     public static String getBarChartByLine(Chart chart, Integer line){
         String[] lines = chart.getLinesAsString();

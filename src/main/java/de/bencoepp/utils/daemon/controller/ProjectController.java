@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @RequestMapping("/project")
 public class ProjectController {
 
-    private App app = new App();
+    private final App app = new App();
 
     @GetMapping("/all")
     public ResponseEntity<ArrayList<Project>> getAll() throws IOException {

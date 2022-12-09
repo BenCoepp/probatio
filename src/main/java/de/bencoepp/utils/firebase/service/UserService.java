@@ -8,9 +8,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class UserService {
-    private String apiKey;
+    private final String apiKey;
     public UserService(String apiKey) {
         this.apiKey = apiKey;
     }
@@ -27,7 +28,7 @@ public class UserService {
                 "    \"returnSecureToken\": true\n" +
                 "}";
         try(OutputStream os = con.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes("utf-8");
+            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
         int responseCode = con.getResponseCode();
@@ -48,7 +49,7 @@ public class UserService {
             }
             reader.close();
         }
-        System.out.println(responseContent.toString());
+        System.out.println(responseContent);
         User user = new User();
         user.fromJson("{\"user\":" + responseContent + "}");
         return user;
@@ -66,7 +67,7 @@ public class UserService {
                 "    \"returnSecureToken\": true\n" +
                 "}";
         try(OutputStream os = con.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes("utf-8");
+            byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
         int responseCode = con.getResponseCode();
