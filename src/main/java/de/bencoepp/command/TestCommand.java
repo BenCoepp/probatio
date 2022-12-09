@@ -29,10 +29,6 @@ public class TestCommand implements Callable<Integer> {
             description = "test project only shallowly")
     boolean shallow;
 
-    @CommandLine.Option(names = {"-d", "--deep"},
-            description = "test project as deep as possible")
-    boolean deep;
-
     @CommandLine.Option(names = {"-v", "--verbose"},
             description = "show more output")
     boolean verbose;
@@ -87,9 +83,6 @@ public class TestCommand implements Callable<Integer> {
                 for (CheckElement element : listDeployments) {
                     element.print(verbose);
                 }
-            }
-            if(deep){
-                
             }
         }
         if(!shallow){
