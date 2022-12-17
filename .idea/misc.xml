@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="de.bencoepp.entity.App" method="addDriver" />
+    <pattern value="de.bencoepp.entity.App" />
+    <pattern value="de.bencoepp.entity.App" method="getCurrentDir" />
+    <pattern value="de.bencoepp.entity.App" method="getEmail" />
+    <pattern value="de.bencoepp.entity.App" method="getPassword" />
+    <pattern value="de.bencoepp.entity.App" method="getUser" />
+    <pattern value="de.bencoepp.entity.App" method="setAppStatus" />
+    <pattern value="de.bencoepp.entity.App" method="setDrivers" />
+    <pattern value="de.bencoepp.entity.App" method="setEmail" />
+    <pattern value="de.bencoepp.entity.App" method="setPassword" />
+    <pattern value="de.bencoepp.entity.App" method="setStatus" />
+    <pattern value="de.bencoepp.entity.App" method="setUser" />
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="corretto-11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="jpab" />
+  </component>
+</project>

@@ -1,0 +1,17 @@
+{"project":{
+  "title" : "probatio",
+  "description" : "",
+  "deployment" : true,
+  "integration" : true,
+  "deploymentStepList" : [ {
+    "title" : null,
+    "description" : null,
+    "command" : null
+  } ],
+  "integrationStepList" : [ {
+    "title" : null,
+    "description" : null,
+    "command" : null
+  } ],
+  "root" : null
+}}
