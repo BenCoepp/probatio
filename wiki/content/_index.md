@@ -45,8 +45,3 @@ The most commonly used probatio commands are:
 
 See 'probatio help <command>' to read about a specific subcommand or concept.
 ```
-
-## Workflow
-In the following chapter you will get an overview of the best way to work with probatio. Please note
-that this workflow is only explanatory. There are a lot of different ways to use this tool and the one
-shown here is also only one of many.
