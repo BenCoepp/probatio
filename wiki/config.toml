@@ -1,0 +1,13 @@
+baseURL = 'https://wiki.probatio.de'
+languageCode = 'en-us'
+title = 'Wiki Probatio'
+
+
+[[menu.shortcuts]]
+name = "GitHub"
+url = "https://github.com/BenCoepp/probatio"
+[[menu.shortcuts]]
+name = "Store"
+url = "https://bencoepp.store"
+
+weight = 11
