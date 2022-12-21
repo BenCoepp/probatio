@@ -126,29 +126,33 @@ public class App {
     }
 
     private void fromJson(String json) throws JsonProcessingException {
-        this.hostname = JsonPath.read(json, "$.app.hostname");
-        this.ip = JsonPath.read(json, "$.app.ip");
-        this.appStatus = JsonPath.read(json, "$.app.appStatus");
-        this.status = JsonPath.read(json, "$.app.status");
-        int countProjects = JsonPath.read(json, "$.app.projects.length()");
-        if(countProjects != 0) {
-            for (int i = 0; i < countProjects; i++) {
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.app.projects[" + i + "]"));
-                Project project = new Project();
-                project.fromJson("{\"project\":" + jsonObject + "}");
-                this.projects.add(project);
+        try{
+            this.hostname = JsonPath.read(json, "$.app.hostname");
+            this.ip = JsonPath.read(json, "$.app.ip");
+            this.appStatus = JsonPath.read(json, "$.app.appStatus");
+            this.status = JsonPath.read(json, "$.app.status");
+            int countProjects = JsonPath.read(json, "$.app.projects.length()");
+            if(countProjects != 0) {
+                for (int i = 0; i < countProjects; i++) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.app.projects[" + i + "]"));
+                    Project project = new Project();
+                    project.fromJson("{\"project\":" + jsonObject + "}");
+                    this.projects.add(project);
+                }
             }
-        }
-        int countRemotes = JsonPath.read(json, "$.app.remotes.length()");
-        if(countRemotes != 0){
-            for (int i = 0; i < countRemotes; i++) {
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.app.remotes[" + i + "]"));
-                Remote remote = new Remote();
-                remote.fromJson("{\"remote\":" + jsonObject + "}");
-                this.remotes.add(remote);
+            int countRemotes = JsonPath.read(json, "$.app.remotes.length()");
+            if(countRemotes != 0){
+                for (int i = 0; i < countRemotes; i++) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.app.remotes[" + i + "]"));
+                    Remote remote = new Remote();
+                    remote.fromJson("{\"remote\":" + jsonObject + "}");
+                    this.remotes.add(remote);
+                }
             }
+        }catch (Exception e){
+            System.out.println(e);
         }
     }
 
