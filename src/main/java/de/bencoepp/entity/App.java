@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.jayway.jsonpath.JsonPath;
-import de.bencoepp.utils.firebase.Firebase;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -55,8 +53,6 @@ public class App {
 
         }
         this.drivers = initDrivers();
-        Firebase firebase = new Firebase("AIzaSyDW4EOc-6nLGGLUEaJ3c9yxSlw1aQcqrWc");
-        firebase.init();
     }
 
     private ArrayList<Driver> initDrivers() {

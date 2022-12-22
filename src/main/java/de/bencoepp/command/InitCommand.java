@@ -3,8 +3,6 @@ package de.bencoepp.command;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import de.bencoepp.entity.App;
-import de.bencoepp.entity.DeploymentStep;
-import de.bencoepp.entity.IntegrationStep;
 import de.bencoepp.entity.Project;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
@@ -97,14 +95,6 @@ public class InitCommand implements Callable<Integer> {
         Project project = new Project();
         project.setTitle(projectTitle);
         project.setDescription("");
-        ArrayList<DeploymentStep> deploymentSteps = new ArrayList<>();
-        deploymentSteps.add(new DeploymentStep());
-        ArrayList<IntegrationStep> integrationSteps = new ArrayList<>();
-        integrationSteps.add(new IntegrationStep());
-        project.setDeployment(true);
-        project.setIntegration(true);
-        project.setIntegrationStepList(integrationSteps);
-        project.setDeploymentStepList(deploymentSteps);
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(project);
         try (PrintWriter out = new PrintWriter("probatio.json")) {
