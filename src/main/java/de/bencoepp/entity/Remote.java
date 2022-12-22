@@ -101,9 +101,7 @@ public class Remote {
 
     public void install() throws JSchException, InterruptedException {
         String[] str = new String[]{
-                "sudo curl https://raw.githubusercontent.com/BenCoepp/probatio/main/install.sh >> install.sh",
-                "sudo chmod +x install.sh",
-                "sudo ./install.sh"
+                "sudo snap install probatio"
         };
         String output = SSHHelper.executeCommands(this,str);
         System.out.println(output);
@@ -111,9 +109,7 @@ public class Remote {
 
     public void setupDaemon() throws JSchException, InterruptedException {
         String[] str = new String[]{
-                "sudo curl https://raw.githubusercontent.com/BenCoepp/probatio/main/installDaemon.sh >> installDaemon.sh",
-                "sudo chmod +x installDaemon.sh",
-                "sudo ./installDaemon.sh"
+                "sudo snap install probatioed"
         };
         String output = SSHHelper.executeCommands(this,str);
         System.out.println(output);
