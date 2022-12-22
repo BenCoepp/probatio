@@ -1,11 +1,12 @@
 package de.bencoepp.command;
 
 import de.bencoepp.entity.App;
-import de.bencoepp.entity.CheckElement;
-import de.bencoepp.entity.Remote;
-import de.bencoepp.utils.validator.StringValidator;
+import entity.CheckElement;
+import entity.Remote;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
+import utils.validator.StringValidator;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;

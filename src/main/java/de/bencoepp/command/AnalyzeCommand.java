@@ -1,11 +1,9 @@
 package de.bencoepp.command;
 
-import de.bencoepp.entity.CheckElement;
-import de.bencoepp.utils.DirectoryHelper;
 import de.bencoepp.utils.asciichart.AsciiChart;
 import de.bencoepp.utils.asciichart.chart.BarChart;
 import de.bencoepp.utils.asciichart.chart.entity.BarElement;
-import de.bencoepp.utils.validator.docker.DockerValidator;
+import entity.CheckElement;
 import me.tongfei.progressbar.ProgressBar;
 import org.apache.commons.io.FilenameUtils;
 import org.barfuin.texttree.api.DefaultNode;
@@ -13,6 +11,8 @@ import org.barfuin.texttree.api.TextTree;
 import org.barfuin.texttree.api.TreeOptions;
 import org.barfuin.texttree.api.style.TreeStyle;
 import picocli.CommandLine;
+import utils.DirectoryHelper;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
-
 @CommandLine.Command(name = "analyze",
         sortOptions = false,
         headerHeading = "@|bold,underline Usage:|@%n%n",
@@ -197,11 +196,7 @@ public class AnalyzeCommand implements Callable<Integer> {
                 pb.setExtraMessage("Finished...");
             }
             for (File dockerCompose : listDockerComposeFiles) {
-                ArrayList<CheckElement> checkElements = DockerValidator.validateDockerComposeFile(dockerCompose);
-                System.out.println(dockerCompose.getName());
-                for (CheckElement checkElement : checkElements) {
-                    checkElement.print(true);
-                }
+
             }
         }
         if(!tree && !chart && !scan){

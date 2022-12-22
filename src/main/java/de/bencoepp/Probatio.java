@@ -34,9 +34,6 @@ public class Probatio implements Runnable{
     }
 
     public static void main(String... args) throws IOException {
-        LoggerContext logContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        ch.qos.logback.classic.Logger log = logContext.getLogger("com.jayway.jsonpath.internal.path.CompiledPath");
-        log.setLevel(Level.INFO);
         System.exit(new CommandLine(new Probatio()).execute(args));
     }
 

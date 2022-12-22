@@ -1,14 +1,12 @@
 package de.bencoepp.command;
 
 import de.bencoepp.entity.App;
-import de.bencoepp.utils.CommandHelper;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
+import utils.CommandHelper;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "serve",
@@ -22,13 +20,9 @@ import java.util.concurrent.Callable;
         description = "lunch some websites from your command line")
 public class ServeCommand implements Callable<Integer> {
 
-    @CommandLine.Option(names = {"-d", "--daemon"},
-            description = "serve the daemon for probatio")
-    boolean daemon;
-
     @CommandLine.Option(names = {"-w", "--wiki"},
             description = "serve the docs from your command line")
-    boolean docs;
+    boolean wiki;
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
     private final App app = new App();
@@ -37,31 +31,7 @@ public class ServeCommand implements Callable<Integer> {
     public Integer call() throws IOException {
         boolean ok = true;
         app.init();
-        if(daemon && !docs){
-            try (ProgressBar pb = new ProgressBar("Starting", 9)) {
-                pb.setExtraMessage("Daemon");
-                pb.step();
-                String[] command = {"docker", "build", "-t","probatio_daemon","."};
-                pb.step();
-                CommandHelper.executeCommand(command, new File("daemon"));
-                pb.step();
-                String[] stop = {"docker","stop","probatio_daemon"};
-                pb.step();
-                CommandHelper.executeCommand(stop, new File("daemon"));
-                pb.step();
-                String[] remove = {"docker","rm","probatio_daemon"};
-                pb.step();
-                CommandHelper.executeCommand(remove, new File("daemon"));
-                pb.step();
-                String[] commandRun = {"docker", "run", "-d","-p","5000:5000","--restart","always","--name","probatio_daemon","probatio_daemon"};
-                pb.step();
-                CommandHelper.executeCommand(commandRun, new File("daemon"));
-                pb.step();
-            }
-            System.out.println("Open the following in your browser of choice to view the daemon:" +
-                    "\nhttp://localhost:5000");
-        }
-        if(docs && !daemon){
+        if(wiki){
             try (ProgressBar pb = new ProgressBar("Starting", 9)) {
                 pb.setExtraMessage("Wiki");
                 pb.step();

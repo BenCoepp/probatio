@@ -3,14 +3,13 @@ package de.bencoepp.command;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import de.bencoepp.entity.App;
-import de.bencoepp.entity.Project;
+import entity.Project;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "init",

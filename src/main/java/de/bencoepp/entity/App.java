@@ -4,6 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.jayway.jsonpath.JsonPath;
+import entity.Driver;
+import entity.Project;
+import entity.Remote;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
