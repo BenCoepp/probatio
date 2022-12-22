@@ -1,9 +1,9 @@
 package de.bencoepp.command;
 
+import de.bencoepp.utils.DirectoryHelper;
 import de.bencoepp.utils.asciichart.AsciiChart;
 import de.bencoepp.utils.asciichart.chart.BarChart;
 import de.bencoepp.utils.asciichart.chart.entity.BarElement;
-import entity.CheckElement;
 import me.tongfei.progressbar.ProgressBar;
 import org.apache.commons.io.FilenameUtils;
 import org.barfuin.texttree.api.DefaultNode;
@@ -11,7 +11,6 @@ import org.barfuin.texttree.api.TextTree;
 import org.barfuin.texttree.api.TreeOptions;
 import org.barfuin.texttree.api.style.TreeStyle;
 import picocli.CommandLine;
-import utils.DirectoryHelper;
 
 import java.io.File;
 import java.math.BigDecimal;

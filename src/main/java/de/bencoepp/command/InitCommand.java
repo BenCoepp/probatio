@@ -3,7 +3,7 @@ package de.bencoepp.command;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import de.bencoepp.entity.App;
-import entity.Project;
+import de.bencoepp.entity.Project;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 

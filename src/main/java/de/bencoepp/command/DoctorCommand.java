@@ -1,15 +1,15 @@
 package de.bencoepp.command;
 
 import de.bencoepp.entity.App;
-import entity.CheckElement;
-import entity.Driver;
+import de.bencoepp.entity.CheckElement;
+import de.bencoepp.entity.Driver;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
-import static utils.DoctorHelper.*;
+import static de.bencoepp.utils.DoctorHelper.*;
 
 @CommandLine.Command(name = "doctor",
         sortOptions = false,

@@ -1,10 +1,9 @@
 package de.bencoepp.command;
 
 import de.bencoepp.entity.App;
+import de.bencoepp.utils.CommandHelper;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
-import utils.CommandHelper;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Callable;
