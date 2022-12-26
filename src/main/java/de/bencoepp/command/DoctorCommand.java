@@ -98,8 +98,6 @@ public class DoctorCommand implements Callable<Integer> {
                 //TODO finish this
             }
         }
-
-
         return ok ? 0 : 1;
     }
 
