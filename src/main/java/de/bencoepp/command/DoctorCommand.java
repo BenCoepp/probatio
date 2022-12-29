@@ -24,7 +24,7 @@ import static de.bencoepp.utils.DoctorHelper.*;
         parameterListHeading = "%n@|bold,underline Parameters:|@%n",
         optionListHeading = "%n@|bold,underline Options:|@%n",
         header = "check system readiness for use",
-        description = "check if the system is ready for the production use of probatio and the nessary tools")
+        description = "check if the system is ready for the production use of probatio and the necessary tools")
 public class DoctorCommand implements Callable<Integer> {
     @CommandLine.Option(names = {"-v", "--verbose"},
             description = "show all information about readiness")
@@ -105,9 +105,9 @@ public class DoctorCommand implements Callable<Integer> {
                         String json = "{\"doctor\":";
                         json += RequestHandler.get(new URL("http://" + remoteOpt.get().getIp() + ":" + remoteOpt.get().getPort() + "/api/doctor/all"));
                         json += "}";
-                        int countProjects = JsonPath.read(json, "$.doctor.length()");
+                        int countDoctors = JsonPath.read(json, "$.doctor.length()");
                         ArrayList<CheckElement> elements = new ArrayList<>();
-                        for (int i = 0; i < countProjects; i++) {
+                        for (int i = 0; i < countDoctors; i++) {
                             ObjectMapper mapper = new ObjectMapper();
                             String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.doctor[" + i + "]"));
                             CheckElement checkElement = new CheckElement();
