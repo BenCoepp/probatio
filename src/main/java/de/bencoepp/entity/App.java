@@ -122,7 +122,7 @@ public class App {
         return driverArrayList;
     }
 
-    private void fromJson(String json) throws JsonProcessingException {
+    private void fromJson(String json) {
         try{
             this.hostname = JsonPath.read(json, "$.app.hostname");
             this.ip = JsonPath.read(json, "$.app.ip");

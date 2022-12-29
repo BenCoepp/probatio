@@ -1,10 +1,7 @@
 package de.bencoepp;
 
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
 import de.bencoepp.command.*;
-import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 import java.io.IOException;
@@ -34,7 +31,7 @@ public class Probatio implements Runnable{
     public Probatio() {
     }
 
-    public static void main(String... args) throws IOException {
+    public static void main(String... args) {
         System.exit(new CommandLine(new Probatio()).execute(args));
     }
 

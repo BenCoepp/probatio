@@ -1,12 +1,14 @@
 package de.bencoepp.command;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import de.bencoepp.entity.App;
 import de.bencoepp.entity.CheckElement;
 import de.bencoepp.entity.Driver;
+import de.bencoepp.entity.Remote;
 import de.bencoepp.utils.RequestHandler;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -93,9 +95,32 @@ public class DoctorCommand implements Callable<Integer> {
                 printReport(issues);
             }
         }else{
-            for (String rem : remotes) {
-                String json = RequestHandler.get(new URL(""));
-                //TODO finish this
+            if(remotes == null){
+                System.out.println("Please provide at least one remote you want to check the doctor status for.");
+            }else{
+                System.out.println("Remotes:");
+                for (String rem : remotes) {
+                    Optional<Remote> remoteOpt = app.getRemotes().stream().filter(remote1 -> remote1.getName().equals(rem)).findAny();
+                    if(remoteOpt.isPresent()){
+                        String json = "{\"doctor\":";
+                        json += RequestHandler.get(new URL("http://" + remoteOpt.get().getIp() + ":" + remoteOpt.get().getPort() + "/api/doctor/all"));
+                        json += "}";
+                        int countProjects = JsonPath.read(json, "$.doctor.length()");
+                        ArrayList<CheckElement> elements = new ArrayList<>();
+                        for (int i = 0; i < countProjects; i++) {
+                            ObjectMapper mapper = new ObjectMapper();
+                            String jsonObject = mapper.writeValueAsString(JsonPath.read(json, "$.doctor[" + i + "]"));
+                            CheckElement checkElement = new CheckElement();
+                            checkElement.fromJson("{\"doctor\":" + jsonObject + "}");
+                            elements.add(checkElement);
+                        }
+                        System.out.println();
+                        System.out.println("For " + rem + " the following doctor output was acquired");
+                        for (CheckElement checkElement : elements) {
+                            checkElement.print(false);
+                        }
+                    }
+                }
             }
         }
         return ok ? 0 : 1;

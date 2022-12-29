@@ -24,7 +24,7 @@ public class Project {
         this.description = description;
     }
 
-    public void fromJson(String json) throws JsonProcessingException {
+    public void fromJson(String json) {
         this.title = JsonPath.read(json, "$.project.title");
         this.description = JsonPath.read(json, "$.project.description");
     }

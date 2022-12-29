@@ -11,7 +11,6 @@ import org.barfuin.texttree.api.TextTree;
 import org.barfuin.texttree.api.TreeOptions;
 import org.barfuin.texttree.api.style.TreeStyle;
 import picocli.CommandLine;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;

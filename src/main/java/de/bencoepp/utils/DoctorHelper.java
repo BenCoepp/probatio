@@ -66,7 +66,7 @@ public class DoctorHelper {
         return checkElement;
     }
 
-    public static CheckElement checkInternetConnected() throws IOException {
+    public static CheckElement checkInternetConnected() {
         CheckElement checkElement = new CheckElement();
         checkElement.setTitle("Internet Access");
         checkElement.setCheck(netIsAvailable());

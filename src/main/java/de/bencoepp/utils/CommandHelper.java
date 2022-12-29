@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 public class CommandHelper {
 
-    public static boolean executeCommand(String[] commands, File dir) throws IOException {
+    public static boolean executeCommand(String[] commands, File dir) {
         boolean ok = true;
         try {
             Runtime rt = Runtime.getRuntime();
@@ -32,7 +32,7 @@ public class CommandHelper {
         return ok;
     }
 
-    public static String executeCommandWithOutput(String[] commands) throws IOException {
+    public static String executeCommandWithOutput(String[] commands) {
         String output = "";
         try {
             Runtime rt = Runtime.getRuntime();

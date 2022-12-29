@@ -81,6 +81,7 @@ public class Remote {
         stringBuilder.append(str);
         stringBuilder.append(" ".repeat(Math.max(0, width - str.length() + 4)));
         stringBuilder.append("│\n");
+        //noinspection deprecation
         String desc = WordUtils.wrap(this.description, 90);
         String[] strings = desc.split("\n");
         for (String string : strings) {

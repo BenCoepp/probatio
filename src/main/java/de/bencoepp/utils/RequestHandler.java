@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class RequestHandler {
-    public static String get(URL url) throws IOException {
+    public static String get(URL url) {
         try {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -17,18 +17,14 @@ public class RequestHandler {
             String line;
             if (status >= 300) {
                 reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-                while ((line = reader.readLine()) != null) {
-                    responseContent.append(line);
-                }
-                reader.close();
             }
             else {
                 reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                while ((line = reader.readLine()) != null) {
-                    responseContent.append(line);
-                }
-                reader.close();
             }
+            while ((line = reader.readLine()) != null) {
+                responseContent.append(line);
+            }
+            reader.close();
             return responseContent.toString();
         }catch (Exception e){
             return e.toString();

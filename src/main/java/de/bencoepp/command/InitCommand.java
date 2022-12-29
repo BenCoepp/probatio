@@ -6,7 +6,6 @@ import de.bencoepp.entity.App;
 import de.bencoepp.entity.Project;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -78,7 +77,7 @@ public class InitCommand implements Callable<Integer> {
                     System.out.println("Project read successfully you can continue with your work.");
                     pb.step();
                 } catch (Exception e) {
-                    System.out.println(e.toString());
+                    System.out.println(e);
                     System.out.println("An error has accused while reading the project, please check the configuration file.");
                 }
             }
