@@ -31,4 +31,27 @@ public class RequestHandler {
         }
     }
 
+    public static String post(URL url){
+        try {
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            int status = con.getResponseCode();
+            StringBuilder responseContent = new StringBuilder();
+            BufferedReader reader;
+            String line;
+            if (status >= 300) {
+                reader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            else {
+                reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            }
+            while ((line = reader.readLine()) != null) {
+                responseContent.append(line);
+            }
+            reader.close();
+            return responseContent.toString();
+        }catch (Exception e){
+            return e.toString();
+        }
+    }
 }
