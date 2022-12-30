@@ -142,7 +142,7 @@ public class TestCommand implements Callable<Integer> {
                     }else {
                         System.out.println("[!] " + testResult.getTitle());
                     }
-                    System.out.println(testResult.getInfo());
+                    System.out.println("    " + testResult.getDescription());
                     for (StepResult stepResult : testResult.getStepResults()) {
                         if(stepResult.getSuccessful()){
                             System.out.println("    [√] " + stepResult.getTitle());
@@ -156,6 +156,7 @@ public class TestCommand implements Callable<Integer> {
                     }else {
                         System.out.println("[!] " + testResult.getTitle());
                     }
+                    System.out.println("    " + testResult.getDescription());
                     for (StepResult stepResult : testResult.getStepResults()) {
                         if(stepResult.getSuccessful()){
                             System.out.println("    [√] " + stepResult.getTitle());

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class TestResult {
     private String title;
+    private String description;
     private Integer testId;
     private String info;
     private Boolean successful;
@@ -53,9 +54,18 @@ public class TestResult {
         this.stepResults = stepResults;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void fromJson(String json) throws JsonProcessingException {
         this.stepResults = new ArrayList<>();
         this.title = JsonPath.read(json, "$.result.title");
+        this.description = JsonPath.read(json, "$.result.description");
         this.testId = JsonPath.read(json, "$.result.testId");
         this.info = JsonPath.read(json, "$.result.info");
         this.successful = JsonPath.read(json, "$.result.successful");
