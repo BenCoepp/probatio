@@ -17,6 +17,7 @@ import java.io.IOException;
                 ServeCommand.class,
                 RemoteCommand.class,
                 ProjectCommand.class,
+                TestCommand.class,
                 CommandLine.HelpCommand.class
         })
 public class Probatio implements Runnable{
