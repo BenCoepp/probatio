@@ -1,9 +1,9 @@
 package de.bencoepp.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.jayway.jsonpath.JsonPath;
 import de.bencoepp.entity.App;
-import de.bencoepp.entity.Project;
 import de.bencoepp.entity.Remote;
 import de.bencoepp.entity.test.StepResult;
 import de.bencoepp.entity.test.TestInfo;
@@ -12,11 +12,9 @@ import de.bencoepp.utils.RequestHandler;
 import me.tongfei.progressbar.ProgressBar;
 import picocli.CommandLine;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -164,6 +162,16 @@ public class TestCommand implements Callable<Integer> {
                             System.out.println("    [!] " + stepResult.getTitle());
                         }
                     }
+                }
+            }
+            if (file){
+                FileWriter fileWriter = new FileWriter("output.txt");
+                PrintWriter printWriter = new PrintWriter(fileWriter);
+                for (TestResult testResult : testResults) {
+                    ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                    String json = ow.writeValueAsString(testResult);
+                    printWriter.println(json);
+                    printWriter.close();
                 }
             }
         }
