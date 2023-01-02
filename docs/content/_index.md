@@ -21,7 +21,7 @@ and if you do I will not guarantee any issues...
 There are a few ways to install Probatio onto your enviroment
 the most common way is through snap
 ```bash
-sudo snap install probatio
+sudo snap install probatio probatioed
 ```
 Snap will download and install probatio and set it up for use. Please remember that for now
 it is still under development.

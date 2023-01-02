@@ -2,7 +2,7 @@
 title = "Doctor"
 chapter = true
 weight = 1
-pre = "<b>2. </b>"
+pre = "<b>3. </b>"
 +++
 # Doctor
 In this chapter we will discuss how to use the doctor command.
