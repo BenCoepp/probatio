@@ -138,6 +138,7 @@ public class App {
                     this.projects.add(project);
                 }
             }
+            this.remotes = new ArrayList<>();
             int countRemotes = JsonPath.read(json, "$.app.remotes.length()");
             if(countRemotes != 0){
                 for (int i = 0; i < countRemotes; i++) {

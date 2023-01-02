@@ -39,7 +39,7 @@ public class DoctorCommand implements Callable<Integer> {
     boolean remote;
 
     @CommandLine.Parameters(description = "remotes you want to run doctor on", arity = "0..1")
-    private String[] remotes;
+    private String[] remotes = {};
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
